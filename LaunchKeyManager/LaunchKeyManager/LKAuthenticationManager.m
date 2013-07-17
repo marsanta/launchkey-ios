@@ -208,7 +208,11 @@
         
         [[LKAPIClient sharedClient] getPath:@"poll" parameters:postParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
             //tell the user that the session is still active
-            [self stillAuthenticated:YES];
+            if (!_session) {
+                [self authenticationFailure:@"Cannot check status of transactional log" withErrorCode:@"1000"];
+            } else {
+                [self stillAuthenticated:YES];
+            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             //if the request has expired
             if ([[self getErrorCode:error] isEqualToString:@"70404"]){
