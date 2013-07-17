@@ -163,11 +163,19 @@
         _authRequest = [jsonResponse objectForKey:@"auth_request"];
         
         //tell the server what action was taken
-        [self logsPut:action withAction:LKAuthenticate];
+        if (_session) {
+            [self logsPut:action withAction:LKAuthenticate];
+        } else if (action) {
+            [self authenticationAuthorized:_userHash withAuthRequest:_authRequest withAppPins:_appPins withDeviceId:_deviceId];
+        } else {
+            [self authenticationNotAuthorized:_userHash withAuthRequest:_authRequest withAppPins:_appPins withDeviceId:_deviceId];
+        }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (![[self getErrorCode:error] isEqualToString:@"70403"]) {
-           [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]]; 
+        if (_session && [[self getErrorCode:error] isEqualToString:@"70404"]) {
+            [self authenticationNotAuthorized:_userHash withAuthRequest:_authRequest withAppPins:_appPins withDeviceId:_deviceId];
+        } else if (![[self getErrorCode:error] isEqualToString:@"70403"]) {
+            [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
         }
     }];
 }
@@ -282,6 +290,7 @@
 -(void)authenticationNotAuthorized:(NSString *)userHash withAuthRequest:(NSString*)authRequest withAppPins:(NSString*)appPins withDeviceId:(NSString*)deviceId {
     if (thisFailure != NULL) {
         thisFailure(@"1000", @"User denied request");
+        thisFailure = NULL;
     }
 }
 
