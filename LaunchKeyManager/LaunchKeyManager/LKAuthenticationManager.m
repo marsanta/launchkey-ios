@@ -163,13 +163,7 @@
         _authRequest = [jsonResponse objectForKey:@"auth_request"];
         
         //tell the server what action was taken
-        if (_session) {
-            [self logsPut:action withAction:LKAuthenticate];
-        } else if (action) {
-            [self authenticationAuthorized:_userHash withAuthRequest:_authRequest withAppPins:_appPins withDeviceId:_deviceId];
-        } else {
-            [self authenticationNotAuthorized:_userHash withAuthRequest:_authRequest withAppPins:_appPins withDeviceId:_deviceId];
-        }
+        [self logsPut:action withAction:LKAuthenticate];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (_session && [[self getErrorCode:error] isEqualToString:@"70404"]) {
