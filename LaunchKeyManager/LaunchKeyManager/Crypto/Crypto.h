@@ -18,5 +18,6 @@
 
 +(NSData *)getSignatureBytes:(NSData *)plainText;
 +(NSString*)get16BytePaddedJsonStringFromDictionary:(NSMutableDictionary*)dictionary;
-
++(void)generateKeyPairWithPublicTag:(NSString *)publicTagString privateTag:(NSString *)privateTagString;
++ (BOOL)verifySignature:(NSData *)plainText signature:(NSData *)sig;
 @end

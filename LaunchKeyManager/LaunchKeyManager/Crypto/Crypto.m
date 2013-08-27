@@ -11,8 +11,6 @@
 #import "NSData+Base64.h"
 #import "Crypto.h"
 
-
-
 @interface Crypto ()
 
 
@@ -403,6 +401,93 @@ static NSString *pemPrivateFooter = @"-----END RSA PRIVATE KEY-----";
     NSString *appendedJson = [jsonString stringByAppendingString:pad];
     
     return appendedJson;
+}
+
++(void)generateKeyPairWithPublicTag:(NSString *)publicTagString privateTag:(NSString *)privateTagString
+{
+    NSMutableDictionary *privateKeyAttr = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *publicKeyAttr = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *keyPairAttr = [[NSMutableDictionary alloc] init];
+    
+    NSData *publicTag = [publicTagString dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *privateTag = [privateTagString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSMutableDictionary *privateKeyDictionary = [[NSMutableDictionary alloc] init];
+    [privateKeyDictionary setObject:(__bridge id) kSecClassKey forKey:(__bridge id)kSecClass];
+    [privateKeyDictionary setObject:(__bridge id) kSecAttrKeyTypeRSA forKey:(__bridge id)kSecAttrKeyType];
+    [privateKeyDictionary setObject:privateTag forKey:(__bridge id)kSecAttrApplicationTag];
+    SecItemDelete((__bridge CFDictionaryRef)privateKeyDictionary);
+    
+    NSMutableDictionary *publicKeyDictionary = [[NSMutableDictionary alloc] init];
+    [publicKeyDictionary setObject:(__bridge id) kSecClassKey forKey:(__bridge id)kSecClass];
+    [publicKeyDictionary setObject:(__bridge id) kSecAttrKeyTypeRSA forKey:(__bridge id)kSecAttrKeyType];
+    [publicKeyDictionary setObject:publicTag forKey:(__bridge id)kSecAttrApplicationTag];
+    SecItemDelete((__bridge CFDictionaryRef)publicKeyDictionary);
+    
+    
+    SecKeyRef publicKey = NULL;
+    SecKeyRef privateKey = NULL;
+    
+    [keyPairAttr setObject:(__bridge id)kSecAttrKeyTypeRSA
+                    forKey:(__bridge id)kSecAttrKeyType];
+    [keyPairAttr setObject:[NSNumber numberWithInt:1024]
+                    forKey:(__bridge id)kSecAttrKeySizeInBits];
+    
+    
+    [privateKeyAttr setObject:[NSNumber numberWithBool:YES] forKey:(__bridge id)kSecAttrIsPermanent];
+    [privateKeyAttr setObject:privateTag forKey:(__bridge id)kSecAttrApplicationTag];
+    
+    [publicKeyAttr setObject:[NSNumber numberWithBool:YES] forKey:(__bridge id)kSecAttrIsPermanent];
+    [publicKeyAttr setObject:publicTag forKey:(__bridge id)kSecAttrApplicationTag];
+    
+    [keyPairAttr setObject:privateKeyAttr forKey:(__bridge id)kSecPrivateKeyAttrs];
+    [keyPairAttr setObject:publicKeyAttr forKey:(__bridge id)kSecPublicKeyAttrs];
+    
+    OSStatus err = SecKeyGeneratePair((__bridge CFDictionaryRef)keyPairAttr, &publicKey, &privateKey);
+    
+    if (err != noErr)
+    {
+        //NSLog(@"Could not generate key pair.");
+    }
+    
+    if(publicKey) CFRelease(publicKey);
+    if(privateKey) CFRelease(privateKey);
+}
+
++ (BOOL)verifySignature:(NSData *)plainText signature:(NSData *)sig
+{
+    NSString *pubKeyStr = [NSString stringWithFormat:@"%@", publicKeyString];
+    NSData *publicTag = [pubKeyStr dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSMutableDictionary * queryPublicKey = [[NSMutableDictionary alloc] init];
+    [queryPublicKey setObject:(__bridge id)kSecClassKey forKey:(__bridge id)kSecClass];
+    [queryPublicKey setObject:publicTag forKey:(__bridge id)kSecAttrApplicationTag];
+    [queryPublicKey setObject:(__bridge id)kSecAttrKeyTypeRSA forKey:(__bridge id)kSecAttrKeyType];
+    [queryPublicKey setObject:[NSNumber numberWithBool:YES] forKey:(__bridge id)kSecReturnRef];
+    
+    SecKeyRef publicKey = NULL;
+    OSStatus err3 = SecItemCopyMatching((__bridge CFDictionaryRef)queryPublicKey, (CFTypeRef *)&publicKey);
+    
+    if (err3 != noErr)
+    {
+        return NO;
+    }
+    
+    size_t signedHashBytesSize = 0;
+	OSStatus sanityCheck = noErr;
+	
+	// Get the size of the assymetric block.
+	signedHashBytesSize = SecKeyGetBlockSize(publicKey);
+	
+	sanityCheck = SecKeyRawVerify(publicKey,
+                                  kSecPaddingPKCS1SHA256,
+                                  (const uint8_t *)[[self getHash256Bytes:plainText] bytes],
+                                  CC_SHA256_DIGEST_LENGTH,
+                                  (const uint8_t *)[sig bytes],
+                                  signedHashBytesSize
+								  );
+	
+	return (sanityCheck == noErr) ? YES : NO;
 }
 
 @end

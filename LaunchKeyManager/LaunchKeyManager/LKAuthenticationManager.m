@@ -282,6 +282,7 @@
 -(void)stillAuthenticated:(BOOL)status {
     if (thisPollSuccess != NULL) {
         thisPollSuccess(status);
+        thisPollSuccess = NULL;
     }
 }
 
@@ -302,6 +303,7 @@
 -(void)logoutSuccessful  {
     if (thisLogoutSuccess != NULL) {
         thisLogoutSuccess();
+        thisLogoutSuccess = NULL;
     }
 }
 
@@ -309,6 +311,7 @@
     [self stopTimer];
     if (thisFailure != NULL) {
         thisFailure(errorMessage, errorCode);
+        thisFailure = NULL;
     }
 }
 
