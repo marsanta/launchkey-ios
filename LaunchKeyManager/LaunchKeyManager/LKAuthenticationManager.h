@@ -11,7 +11,7 @@
 
 typedef void (^pollSuccessBlock)(BOOL authorized);
 typedef void (^logoutSuccessBlock)();
-typedef void (^successBlock)(NSString *userHash, NSString *authRequest, NSString *pins, NSString *deviceId);
+typedef void (^successBlock)(NSString *userHash, NSString *authRequest, NSString* userPushId, NSString *pins, NSString *deviceId);
 typedef void (^failureBlock)(NSString *errorMessage, NSString *errorCode);
 
 @interface LKAuthenticationManager : NSObject
@@ -24,7 +24,7 @@ typedef void (^failureBlock)(NSString *errorMessage, NSString *errorCode);
 + (LKAuthenticationManager *)sharedClient;
 - (void)init:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
 - (void)authorize:(NSString*)username withSuccess:(successBlock)success withFailure:(failureBlock)failure;
-- (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withSuccess:(successBlock)success withFailure:(failureBlock)failure;
+- (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(successBlock)success withFailure:(failureBlock)failure;
 - (void)logout:(NSString*)authRequest withSuccess:(logoutSuccessBlock)success withFailure:(failureBlock)failure;
 - (void)isAuthorized:(NSString*)authRequest withSuccess:(pollSuccessBlock)success withFailure:(failureBlock)failure;
 - (BOOL)handleOpenUrl:(NSURL *)url;

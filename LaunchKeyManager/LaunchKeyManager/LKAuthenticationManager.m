@@ -23,7 +23,9 @@
     NSString *_userHash;
     NSString *_appPins;
     NSString *_deviceId;
+    NSString *_userPushId;
     BOOL _session;
+    BOOL _hasUserPushId;
 }
 
 @synthesize thisSuccess, thisLogoutSuccess;
@@ -53,10 +55,18 @@
     _secretKey = secretKey;
     _appKey = appKey;
     _session = true;
+    _hasUserPushId = false;
 }
 
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withSuccess:(successBlock)success withFailure:(failureBlock)failure {
     _session = !transactional;
+    _hasUserPushId = false;
+    [self authorize:username withSuccess:success withFailure:failure];
+}
+
+- (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(successBlock)success withFailure:(failureBlock)failure {
+    _session = !transactional;
+    _hasUserPushId = pushId;
     [self authorize:username withSuccess:success withFailure:failure];
 }
 
@@ -88,11 +98,13 @@
         [postParams setObject:signedDataString forKey:@"signature"];
         [postParams setObject:_userName forKey:@"username"];
         [postParams setObject:boolString forKey:@"session"];
+        [postParams setObject:[NSString stringWithFormat:@"%s", _hasUserPushId ? "true" : "false"] forKey:@"user_push_id"];
         
         //Do the POST
         [[LKAPIClient sharedClient] postPath:@"auths" parameters:postParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
             _authRequest = [responseObject objectForKey:@"auth_request"];
+            _userPushId = [responseObject objectForKey:@"user_push_id"];
             
             //build the url string to call the lauhcnkey app
             NSURL *launchKeyURL = [NSURL URLWithString:[NSString stringWithFormat:@"LK%d://appKey/%@/authRequest/%@/username/%@", LKAppId, _appKey, _authRequest, [username lowercaseString]]];
@@ -259,7 +271,7 @@
             //response appropriately
             if (status) {
                 if ([action isEqualToString:LKAuthenticate]) {
-                    [self authenticationAuthorized:_userHash withAuthRequest:_authRequest withAppPins:_appPins withDeviceId:_deviceId];
+                    [self authenticationAuthorized:_userHash withAuthRequest:_authRequest withUserPushId:_userPushId withAppPins:_appPins withDeviceId:_deviceId];
                 } else if ([action isEqualToString:LKRevoke]) {
                     [self logoutSuccessful];
                 }
@@ -293,9 +305,9 @@
     }
 }
 
--(void)authenticationAuthorized:(NSString *)userHash withAuthRequest:(NSString*)authRequest withAppPins:(NSString*)appPins withDeviceId:(NSString*)deviceId {
+-(void)authenticationAuthorized:(NSString *)userHash withAuthRequest:(NSString*)authRequest withUserPushId:(NSString*)pushId withAppPins:(NSString*)appPins withDeviceId:(NSString*)deviceId {
     if (thisSuccess != NULL) {
-        thisSuccess(userHash, authRequest, appPins, deviceId);
+        thisSuccess(userHash, authRequest, pushId, appPins, deviceId);
         thisSuccess = NULL;
     }
 }
