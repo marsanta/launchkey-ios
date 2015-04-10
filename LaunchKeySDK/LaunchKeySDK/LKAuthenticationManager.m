@@ -7,9 +7,9 @@
 
 #import <UIKit/UIKit.h>
 #import "LKAuthenticationManager.h"
-#import "NSData+Base64.h"
+#import "NSData+LKBase64.h"
 #import "LKAPIClient.h"
-#import "Crypto.h"
+#import "LKCrypto.h"
 
 @implementation LKAuthenticationManager {
     NSTimer *_pollTimer;
@@ -26,9 +26,10 @@
     NSString *_userPushId;
     BOOL _session;
     BOOL _hasUserPushId;
+    BOOL _isWhiteLabel;
 }
 
-@synthesize thisSuccess, thisLogoutSuccess;
+@synthesize thisSuccess, thisLogoutSuccess, thisRegisterSuccess;
 @synthesize thisFailure, thisPollSuccess;
 
 #define LKPollingTimer 3
@@ -50,7 +51,7 @@
 
 - (void)init:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
     //save the private key so we can use it for later
-    [Crypto setPrivateKey:privateKey tag:privateKeyString];
+    [LKCrypto setPrivateKey:privateKey tag:privateKeyString];
     
     _secretKey = secretKey;
     _appKey = appKey;
@@ -58,15 +59,95 @@
     _hasUserPushId = false;
 }
 
+- (void)createWhiteLabelUser:(NSString*)identifier withSuccess:(registerSuccessBlock)success withFailure:(failureBlock)failure {
+    thisRegisterSuccess = success;
+    thisFailure = failure;
+    
+    //call ping to get the server public key and time
+    [[LKAPIClient sharedClient] getPath:@"ping" parameters:nil success:^(LKHTTPRequestOperation *operation, id responseObject) {
+        
+        NSString *apiPublicKey = [responseObject objectForKey:@"key"];
+        _launchKeyTime = [responseObject objectForKey:@"launchkey_time"];
+        
+        //save the public key so we can use it for later
+        [LKCrypto setPublicKey:apiPublicKey tag:publicKeyString];
+        
+        //encrypt the secret key
+        NSString *encryptedSecret = [self getEncryptedSecretKey];
+                
+        //build the parameters for auths POST
+        NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
+        
+        [postParams setObject:_appKey forKey:@"app_key"];
+        [postParams setObject:identifier forKey:@"identifier"];
+        [postParams setObject:encryptedSecret forKey:@"secret_key"];
+        
+        
+        
+        NSLog(@"params - %@", postParams);
+        
+        //JSON dict to NSData
+        NSData *postDataToSign = [NSJSONSerialization dataWithJSONObject:postParams options:0 error:nil];
+        
+        //sign the encrypted package
+        NSString *signedDataString = [self getSignatureOnBodyWithoutDecoding:postDataToSign];
+        
+       
+        
+        signedDataString = [signedDataString stringByReplacingOccurrencesOfString:@"\r\n" withString:@""];
+        
+         NSLog(@"signed - %@", signedDataString);
+        
+        NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
+                                                                                      NULL,
+                                                                                      (CFStringRef)signedDataString,
+                                                                                      NULL,
+                                                                                      (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                      kCFStringEncodingUTF8 ));
+        
+        
+        
+        NSLog(@"signed updated - %@", signedDataString);
+        
+        NSString *postPath = [NSString stringWithFormat:@"users?signature=%@", encodedString];
+        
+        NSLog(@"%@", postPath);
+        
+        //Do the POST
+        [[LKAPIClient sharedClient] postPath:postPath parameters:postParams success:^(LKHTTPRequestOperation *operation, id responseObject) {
+            
+            NSLog(@"%@", responseObject);
+            thisRegisterSuccess();
+            
+        } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"%@", operation);
+            NSLog(@"%@", error);
+            [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
+        }];
+        
+    } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
+        [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
+    }];
+}
+
+- (void)authorizeWhiteLabelUser:(NSString*)identifier withSuccess:(successBlock)success withFailure:(failureBlock)failure {
+    _session = true;
+    _hasUserPushId = false;
+    _isWhiteLabel = true;
+    [self authorize:identifier withSuccess:success withFailure:failure];
+}
+
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withSuccess:(successBlock)success withFailure:(failureBlock)failure {
     _session = !transactional;
     _hasUserPushId = false;
+    _isWhiteLabel = false;
     [self authorize:username withSuccess:success withFailure:failure];
 }
 
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(successBlock)success withFailure:(failureBlock)failure {
     _session = !transactional;
     _hasUserPushId = pushId;
+    _isWhiteLabel = false;
     [self authorize:username withSuccess:success withFailure:failure];
 }
 
@@ -75,14 +156,14 @@
     thisFailure = failure;
     
     //call ping to get the server public key and time
-    [[LKAPIClient sharedClient] getPath:@"ping" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[LKAPIClient sharedClient] getPath:@"ping" parameters:nil success:^(LKHTTPRequestOperation *operation, id responseObject) {
         
         NSString *apiPublicKey = [responseObject objectForKey:@"key"];
         _launchKeyTime = [responseObject objectForKey:@"launchkey_time"];
         _userName = username;
         
         //save the public key so we can use it for later
-        [Crypto setPublicKey:apiPublicKey tag:publicKeyString];
+        [LKCrypto setPublicKey:apiPublicKey tag:publicKeyString];
         
         //encrypt the secret key
         NSString *encryptedSecret = [self getEncryptedSecretKey];
@@ -101,28 +182,30 @@
         [postParams setObject:[NSString stringWithFormat:@"%s", _hasUserPushId ? "true" : "false"] forKey:@"user_push_id"];
         
         //Do the POST
-        [[LKAPIClient sharedClient] postPath:@"auths" parameters:postParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[LKAPIClient sharedClient] postPath:@"auths" parameters:postParams success:^(LKHTTPRequestOperation *operation, id responseObject) {
             
             _authRequest = [responseObject objectForKey:@"auth_request"];
             
-            //build the url string to call the lauhcnkey app
-            NSURL *launchKeyURL = [NSURL URLWithString:[NSString stringWithFormat:@"LK%d://appKey/%@/authRequest/%@/username/%@", LKAppId, _appKey, _authRequest, [username lowercaseString]]];
-            BOOL canOpen = [[UIApplication sharedApplication] canOpenURL:launchKeyURL];
-            
-            //if the launchkey app is installed
-            if (canOpen) {
-                //open it
-                [[UIApplication sharedApplication] openURL:launchKeyURL];
-            } 
+            if(!_isWhiteLabel) {
+                //build the url string to call the lauhcnkey app
+                NSURL *launchKeyURL = [NSURL URLWithString:[NSString stringWithFormat:@"LK%d://appKey/%@/authRequest/%@/username/%@", LKAppId, _appKey, _authRequest, [username lowercaseString]]];
+                BOOL canOpen = [[UIApplication sharedApplication] canOpenURL:launchKeyURL];
+                
+                //if the launchkey app is installed
+                if (canOpen) {
+                    //open it
+                    [[UIApplication sharedApplication] openURL:launchKeyURL];
+                }
+            }
             
             //and start polling
             [self startPolling];
-                        
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
             [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
         }];
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
         [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
     }];
 }
@@ -144,18 +227,18 @@
     //Stop the last Poll if it is taking a long time
     [[LKAPIClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"poll"];
     
-    [[LKAPIClient sharedClient] getPath:@"poll" parameters:postParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[LKAPIClient sharedClient] getPath:@"poll" parameters:postParams success:^(LKHTTPRequestOperation *operation, id responseObject) {
         //stop the timer
         [self stopTimer];
         //cancel the previous timeout request
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopWaitingAndTimeout:) object:NULL];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopPollingAndTimeout:) object:NULL];
         
         NSString *encryptedAuth = [responseObject objectForKey:@"auth"];
         _userHash = [responseObject objectForKey:@"user_hash"];
         _userPushId = [responseObject objectForKey:@"user_push_id"];
         
         //decrypt the server response
-        NSString *decryptedResponse = [Crypto decryptRSA:encryptedAuth key:privateKeyString];
+        NSString *decryptedResponse = [LKCrypto decryptRSA:encryptedAuth key:privateKeyString];
         
         //convert response to json dictionary
         NSData *jsonData = [decryptedResponse dataUsingEncoding:NSUTF8StringEncoding];
@@ -177,7 +260,7 @@
         //tell the server what action was taken
         [self logsPut:action withAction:LKAuthenticate];
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
         if (_session && [[self getErrorCode:error] isEqualToString:@"70404"]) {
             [self authenticationNotAuthorized:_userHash withAuthRequest:_authRequest withAppPins:_appPins withDeviceId:_deviceId];
         } else if (![[self getErrorCode:error] isEqualToString:@"70403"]) {
@@ -192,12 +275,12 @@
     _authRequest = authRequest;
     
     //get the launchkey public key and server time
-    [[LKAPIClient sharedClient] getPath:@"ping" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[LKAPIClient sharedClient] getPath:@"ping" parameters:nil success:^(LKHTTPRequestOperation *operation, id responseObject) {
         
         NSString *apiPublicKey = [responseObject objectForKey:@"key"];
         _launchKeyTime = [responseObject objectForKey:@"launchkey_time"];
         
-        [Crypto setPublicKey:apiPublicKey tag:publicKeyString];
+        [LKCrypto setPublicKey:apiPublicKey tag:publicKeyString];
         
         //encrypt the secret key
         NSString *encryptedSecret = [self getEncryptedSecretKey];
@@ -212,14 +295,14 @@
         [postParams setObject:signedDataString forKey:@"signature"];
         [postParams setObject:_authRequest forKey:@"auth_request"];
         
-        [[LKAPIClient sharedClient] getPath:@"poll" parameters:postParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[LKAPIClient sharedClient] getPath:@"poll" parameters:postParams success:^(LKHTTPRequestOperation *operation, id responseObject) {
             //tell the user that the session is still active
             if (!_session) {
                 [self authenticationFailure:@"Cannot check status of transactional log" withErrorCode:@"1000"];
             } else {
                 [self stillAuthenticated:YES];
             }
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
             //if the request has expired
             if ([[self getErrorCode:error] isEqualToString:@"70404"]){
                 [self logsPut:YES withAction:LKRevoke];
@@ -229,7 +312,7 @@
             }
         }];
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
         [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
     }];
 }
@@ -244,12 +327,12 @@
 
 -(void)logsPut:(BOOL)status withAction:(NSString*)action{
     //get the LaunchKey server time and public key
-    [[LKAPIClient sharedClient] getPath:@"ping" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[LKAPIClient sharedClient] getPath:@"ping" parameters:nil success:^(LKHTTPRequestOperation *operation, id responseObject) {
         
         NSString *apiPublicKey = [responseObject objectForKey:@"key"];
         _launchKeyTime = [responseObject objectForKey:@"launchkey_time"];
         
-        [Crypto setPublicKey:apiPublicKey tag:publicKeyString];
+        [LKCrypto setPublicKey:apiPublicKey tag:publicKeyString];
         
         //encrypt the secret key
         NSString *encryptedSecret = [self getEncryptedSecretKey];
@@ -267,7 +350,7 @@
         [postParams setObject:statusString forKey:@"status"];
         [postParams setObject:_authRequest forKey:@"auth_request"];
         
-        [[LKAPIClient sharedClient] putPath:@"logs" parameters:postParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[LKAPIClient sharedClient] putPath:@"logs" parameters:postParams success:^(LKHTTPRequestOperation *operation, id responseObject) {
             //response appropriately
             if (status) {
                 if ([action isEqualToString:LKAuthenticate]) {
@@ -283,10 +366,10 @@
                 }
             }
             
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
             [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
         }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
         [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
     }];
 }
@@ -382,15 +465,24 @@
     [secretParams setObject:_launchKeyTime forKey:@"stamped"];
     
     //encrypt with the apis public key
-    NSString *appendedJson = [Crypto get16BytePaddedJsonStringFromDictionary:secretParams];
-    NSString *encryptedSecret = [Crypto encryptRSA:appendedJson key:publicKeyString];
+    NSString *appendedJson = [LKCrypto get16BytePaddedJsonStringFromDictionary:secretParams];
+    NSString *encryptedSecret = [LKCrypto encryptRSA:appendedJson key:publicKeyString];
     
     return encryptedSecret;
 }
 
+- (NSString*)getSignatureOnBodyWithoutDecoding:(NSData*)bodyData {
+    //get the signature bytes on the encryptes data
+    NSData *signedData = [LKCrypto getSignatureBytes:bodyData];
+    //base64 encode them
+    NSString *signedDataString = [signedData base64EncodedString];
+    
+    return signedDataString;
+}
+
 - (NSString*)getSignatureOnSecretKey:(NSString*)secretKey {
     //get the signature bytes on the encryptes data
-    NSData *signedData = [Crypto getSignatureBytes:[NSData dataFromBase64String:secretKey]];
+    NSData *signedData = [LKCrypto getSignatureBytes:[NSData dataFromBase64String:secretKey]];
     //base64 encode them
     NSString *signedDataString = [signedData base64EncodedString];
     

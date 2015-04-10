@@ -6,9 +6,9 @@
 //
 
 #import "LKAPIClient.h"
-#import "AFJSONRequestOperation.h"
-#import "Crypto.h"
-#import "NSData+Base64.h"
+#import "LKJSONRequestOperation.h"
+#import "LKCrypto.h"
+#import "NSData+LKBase64.h"
 
 @implementation LKAPIClient
 
@@ -32,7 +32,7 @@
         return nil;
     }
     
-    [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
+    [self registerHTTPOperationClass:[LKJSONRequestOperation class]];
 	[self setDefaultHeader:@"Accept" value:@"application/json"];
     
     return self;
