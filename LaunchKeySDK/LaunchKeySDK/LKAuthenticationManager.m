@@ -131,7 +131,7 @@
                                                                                   options: NSJSONReadingMutableContainers
                                                                                     error: nil];
                 
-                thisRegisterSuccess([dictionary objectForKey:@"code"], [responseObject objectForKey:@"qrcode"]);
+                thisRegisterSuccess([dictionary objectForKey:@"code"], [dictionary objectForKey:@"qrcode"]);
             } @catch (NSException *exception) {
                 
             }
