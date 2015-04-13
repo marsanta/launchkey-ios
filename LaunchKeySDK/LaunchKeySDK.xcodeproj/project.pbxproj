@@ -22,6 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		633808321ADC6C8500E13A1B /* NSData+LKAES256.h in Headers */ = {isa = PBXBuildFile; fileRef = 633808301ADC6C8500E13A1B /* NSData+LKAES256.h */; };
+		633808331ADC6C8500E13A1B /* NSData+LKAES256.m in Sources */ = {isa = PBXBuildFile; fileRef = 633808311ADC6C8500E13A1B /* NSData+LKAES256.m */; };
 		638778571AD6E31F00364D6E /* LaunchKeySDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 638778561AD6E31F00364D6E /* LaunchKeySDK.h */; };
 		6387785F1AD6E31F00364D6E /* libLaunchKeySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 638778531AD6E31F00364D6E /* libLaunchKeySDK.a */; };
 		6387786E1AD6E38D00364D6E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387786D1AD6E38D00364D6E /* Security.framework */; };
@@ -78,6 +80,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		633808301ADC6C8500E13A1B /* NSData+LKAES256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+LKAES256.h"; path = "LKCrypto/NSData+LKAES256.h"; sourceTree = "<group>"; };
+		633808311ADC6C8500E13A1B /* NSData+LKAES256.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+LKAES256.m"; path = "LKCrypto/NSData+LKAES256.m"; sourceTree = "<group>"; };
+		633808341ADC6CB000E13A1B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		638778531AD6E31F00364D6E /* libLaunchKeySDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLaunchKeySDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		638778561AD6E31F00364D6E /* LaunchKeySDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LaunchKeySDK.h; sourceTree = "<group>"; };
 		6387785E1AD6E31F00364D6E /* LaunchKeySDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LaunchKeySDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +135,7 @@
 		6387784A1AD6E31F00364D6E = {
 			isa = PBXGroup;
 			children = (
+				633808341ADC6CB000E13A1B /* CoreData.framework */,
 				638778A21AD7011300364D6E /* UIKit.framework */,
 				638778A01AD700FE00364D6E /* Foundation.framework */,
 				6387786D1AD6E38D00364D6E /* Security.framework */,
@@ -205,6 +211,8 @@
 		638778811AD6E42600364D6E /* LKCrypto */ = {
 			isa = PBXGroup;
 			children = (
+				633808301ADC6C8500E13A1B /* NSData+LKAES256.h */,
+				633808311ADC6C8500E13A1B /* NSData+LKAES256.m */,
 				638778821AD6E44400364D6E /* LKCrypto.h */,
 				638778831AD6E44400364D6E /* LKCrypto.m */,
 				638778841AD6E44400364D6E /* NSData+LKBase64.h */,
@@ -221,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6387788C1AD6EF6100364D6E /* LKAuthenticationManager.h in Headers */,
+				633808321ADC6C8500E13A1B /* NSData+LKAES256.h in Headers */,
 				638778981AD6F9CC00364D6E /* LKCrypto.h in Headers */,
 				638778991AD6F9CC00364D6E /* NSData+LKBase64.h in Headers */,
 				6387789A1AD6F9CC00364D6E /* LKAPIClient.h in Headers */,
@@ -358,6 +367,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6387787C1AD6E3F800364D6E /* LKURLConnectionOperation.m in Sources */,
+				633808331ADC6C8500E13A1B /* NSData+LKAES256.m in Sources */,
 				6387787A1AD6E3F800364D6E /* LKHTTPRequestOperation.m in Sources */,
 				638778791AD6E3F800364D6E /* LKHTTPClient.m in Sources */,
 				638778871AD6E44400364D6E /* NSData+LKBase64.m in Sources */,
@@ -564,6 +574,7 @@
 				638778691AD6E31F00364D6E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6387786A1AD6E31F00364D6E /* Build configuration list for PBXNativeTarget "LaunchKeySDKTests" */ = {
 			isa = XCConfigurationList;
@@ -572,6 +583,7 @@
 				6387786C1AD6E31F00364D6E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		638778901AD6F6CE00364D6E /* Build configuration list for PBXAggregateTarget "LaunchKeySDKFramework" */ = {
 			isa = XCConfigurationList;
@@ -580,6 +592,7 @@
 				638778921AD6F6CE00364D6E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

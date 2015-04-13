@@ -20,4 +20,8 @@
 +(NSString*)get16BytePaddedJsonStringFromDictionary:(NSMutableDictionary*)dictionary;
 +(void)generateKeyPairWithPublicTag:(NSString *)publicTagString privateTag:(NSString *)privateTagString;
 + (BOOL)verifySignature:(NSData *)plainText signature:(NSData *)sig;
+
+
++ (NSData*) PKCSSignBytesSHA256withRSA:(NSData*) plainData;
++ (BOOL) PKCSVerifyBytesSHA256withRSA:(NSData*) plainData withSignature:(NSData*) signature withPublicKey:(SecKeyRef) publicKey;
 @end

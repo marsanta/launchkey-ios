@@ -402,6 +402,11 @@ typedef enum {
          success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
          failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
 
+- (void)JSONpostPath:(NSString *)path
+          parameters:(NSData *)parameters
+             success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
+             failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
+
 /**
  Creates an `AFHTTPRequestOperation` with a `PUT` request, and enqueues it to the HTTP client's operation queue.
 

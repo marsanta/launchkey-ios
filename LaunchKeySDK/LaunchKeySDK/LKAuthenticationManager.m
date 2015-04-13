@@ -10,6 +10,7 @@
 #import "NSData+LKBase64.h"
 #import "LKAPIClient.h"
 #import "LKCrypto.h"
+#import "NSData+LKAES256.h"
 
 @implementation LKAuthenticationManager {
     NSTimer *_pollTimer;
@@ -74,50 +75,66 @@
         
         //encrypt the secret key
         NSString *encryptedSecret = [self getEncryptedSecretKey];
+        
                 
         //build the parameters for auths POST
         NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
         
-        [postParams setObject:_appKey forKey:@"app_key"];
-        [postParams setObject:identifier forKey:@"identifier"];
         [postParams setObject:encryptedSecret forKey:@"secret_key"];
+        [postParams setObject:identifier forKey:@"identifier"];
+        [postParams setObject:_appKey forKey:@"app_key"];
         
+
+        NSError *error;
         
+        NSData *policyData = [NSJSONSerialization dataWithJSONObject:postParams options:kNilOptions error:&error];
+        if(!policyData && error){
+            NSLog(@"Error creating JSON: %@", [error localizedDescription]);
+            return;
+        }
         
-        NSLog(@"params - %@", postParams);
+        //NSJSONSerialization converts a URL string from http://... to http:\/\/... remove the extra escapes
+        NSString *policyStr = [[NSString alloc] initWithData:policyData encoding:NSUTF8StringEncoding];
+        policyStr = [policyStr stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
+        policyData = [policyStr dataUsingEncoding:NSUTF8StringEncoding];
         
-        //JSON dict to NSData
-        NSData *postDataToSign = [NSJSONSerialization dataWithJSONObject:postParams options:0 error:nil];
         
         //sign the encrypted package
-        NSString *signedDataString = [self getSignatureOnBodyWithoutDecoding:postDataToSign];
-        
-       
-        
+        NSString *signedDataString = [self getSignatureOnBodyWithoutDecoding:policyData];
+
         signedDataString = [signedDataString stringByReplacingOccurrencesOfString:@"\r\n" withString:@""];
-        
-         NSLog(@"signed - %@", signedDataString);
-        
-        NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
-                                                                                      NULL,
-                                                                                      (CFStringRef)signedDataString,
-                                                                                      NULL,
-                                                                                      (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                      kCFStringEncodingUTF8 ));
-        
-        
-        
-        NSLog(@"signed updated - %@", signedDataString);
+
+        NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)signedDataString, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
         
         NSString *postPath = [NSString stringWithFormat:@"users?signature=%@", encodedString];
         
-        NSLog(@"%@", postPath);
-        
         //Do the POST
-        [[LKAPIClient sharedClient] postPath:postPath parameters:postParams success:^(LKHTTPRequestOperation *operation, id responseObject) {
+        [[LKAPIClient sharedClient] JSONpostPath:postPath parameters:policyData success:^(LKHTTPRequestOperation *operation, id responseObject) {
             
-            NSLog(@"%@", responseObject);
-            thisRegisterSuccess();
+            @try {
+                NSString *cipher = [[responseObject objectForKey:@"response"] objectForKey:@"cipher"];
+                NSString *dataString = [[responseObject objectForKey:@"response"] objectForKey:@"data"];
+                
+                NSString *decryptedCipher = [LKCrypto decryptRSA:cipher key:privateKeyString];
+                
+                NSString *token = [decryptedCipher substringToIndex:32];
+                NSString *salt = [decryptedCipher substringWithRange:NSMakeRange(32, 16)];
+                
+                NSData *dataStringData = [NSData dataFromBase64String:dataString];
+                
+                NSData *decryptedData = [dataStringData LKAES256DecryptWithKey:token withSalt:salt];
+                
+                
+                NSString *unencryptedString = [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
+                
+                NSMutableDictionary *dictionary = [NSJSONSerialization JSONObjectWithData: [unencryptedString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                  options: NSJSONReadingMutableContainers
+                                                                                    error: nil];
+                
+                thisRegisterSuccess([dictionary objectForKey:@"code"], [responseObject objectForKey:@"qrcode"]);
+            } @catch (NSException *exception) {
+                
+            }
             
         } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"%@", operation);
@@ -128,13 +145,6 @@
     } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
         [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
     }];
-}
-
-- (void)authorizeWhiteLabelUser:(NSString*)identifier withSuccess:(successBlock)success withFailure:(failureBlock)failure {
-    _session = true;
-    _hasUserPushId = false;
-    _isWhiteLabel = true;
-    [self authorize:identifier withSuccess:success withFailure:failure];
 }
 
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withSuccess:(successBlock)success withFailure:(failureBlock)failure {
@@ -473,7 +483,7 @@
 
 - (NSString*)getSignatureOnBodyWithoutDecoding:(NSData*)bodyData {
     //get the signature bytes on the encryptes data
-    NSData *signedData = [LKCrypto getSignatureBytes:bodyData];
+    NSData *signedData = [LKCrypto PKCSSignBytesSHA256withRSA:bodyData];
     //base64 encode them
     NSString *signedDataString = [signedData base64EncodedString];
     

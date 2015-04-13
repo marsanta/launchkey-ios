@@ -12,8 +12,9 @@
 typedef void (^pollSuccessBlock)(BOOL authorized);
 typedef void (^logoutSuccessBlock)();
 typedef void (^successBlock)(NSString *userHash, NSString *authRequest, NSString* userPushId, NSString *pins, NSString *deviceId);
+typedef void (^whiteLabelSuccessBlock)(NSString *authRequest);
 typedef void (^failureBlock)(NSString *errorMessage, NSString *errorCode);
-typedef void (^registerSuccessBlock)();
+typedef void (^registerSuccessBlock)(NSString *qrCode, NSString *qrUrl);
 
 @interface LKAuthenticationManager : NSObject
 
@@ -22,6 +23,7 @@ typedef void (^registerSuccessBlock)();
 @property (nonatomic, copy) pollSuccessBlock thisPollSuccess;
 @property (nonatomic, copy) logoutSuccessBlock thisLogoutSuccess;
 @property (nonatomic, copy) registerSuccessBlock thisRegisterSuccess;
+@property (nonatomic, copy) whiteLabelSuccessBlock thisWhiteLabelSuccess;
 
 
 + (LKAuthenticationManager *)sharedClient;
@@ -35,7 +37,6 @@ typedef void (^registerSuccessBlock)();
 - (BOOL)handleOpenUrl:(NSURL *)url;
 
 
-- (void)authorizeWhiteLabelUser:(NSString*)identifier withSuccess:(successBlock)success withFailure:(failureBlock)failure;
 - (void)createWhiteLabelUser:(NSString*)identifier withSuccess:(registerSuccessBlock)success withFailure:(failureBlock)failure;
 
 @end

@@ -456,6 +456,45 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 	[self.defaultHeaders removeObjectForKey:@"Authorization"];
 }
 
+- (NSMutableURLRequest *)JSONPOSTRequestWithMethod:(NSString *)method
+                                              path:(NSString *)path
+                                        parameters:(NSData *)parameters
+{
+    NSParameterAssert(method);
+    
+    if (!path) {
+        path = @"";
+    }
+    
+    
+    NSURL *url = [NSURL URLWithString:path relativeToURL:self.baseURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setHTTPMethod:method];
+    [request setAllHTTPHeaderFields:self.defaultHeaders];
+    
+    if (parameters) {
+        
+        NSString *charset = (__bridge NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(self.stringEncoding));
+        NSError *error = nil;
+        
+        [request setValue:[NSString stringWithFormat:@"application/json; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wassign-enum"
+        [request setHTTPBody:parameters];
+#pragma clang diagnostic pop
+        
+        if (error) {
+            NSLog(@"%@ %@: %@", [self class], NSStringFromSelector(_cmd), error);
+        }
+        
+    }
+    
+    [request setHTTPShouldHandleCookies:NO];
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
+    
+    return request;
+}
+
 #pragma mark -
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
@@ -673,6 +712,16 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
         failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
 {
 	NSURLRequest *request = [self requestWithMethod:@"GET" path:path parameters:parameters];
+    LKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+    [self enqueueHTTPRequestOperation:operation];
+}
+
+- (void)JSONpostPath:(NSString *)path
+      parameters:(NSData *)parameters
+         success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
+         failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSURLRequest *request = [self JSONPOSTRequestWithMethod:@"POST" path:path parameters:parameters];
     LKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [self enqueueHTTPRequestOperation:operation];
 }

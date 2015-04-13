@@ -20,7 +20,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedClient = [[LKAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kLKAPIClientBaseURLString]];
-        [_sharedClient setParameterEncoding:AFFormURLParameterEncoding];
+        [_sharedClient setParameterEncoding:AFJSONParameterEncoding];
     });
     
     return _sharedClient;
