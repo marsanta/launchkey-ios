@@ -50,9 +50,9 @@
 }
 
 - (void)initAsWhiteLabel:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
-    _isWhiteLabel = true;
-    
+   
     [self init:appKey withSecretKey:secretKey withPrivateKey:privateKey];
+     _isWhiteLabel = true;
 }
 
 - (void)init:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
@@ -63,11 +63,14 @@
     _appKey = appKey;
     _session = true;
     _hasUserPushId = false;
+     _isWhiteLabel = false;
 }
 
 - (void)createWhiteLabelUser:(NSString*)identifier withSuccess:(registerSuccessBlock)success withFailure:(failureBlock)failure {
     thisRegisterSuccess = success;
     thisFailure = failure;
+    
+    identifier = [identifier lowercaseString];
     
     //call ping to get the server public key and time
     [[LKAPIClient sharedClient] getPath:@"ping" parameters:nil success:^(LKHTTPRequestOperation *operation, id responseObject) {
@@ -94,7 +97,6 @@
         
         NSData *policyData = [NSJSONSerialization dataWithJSONObject:postParams options:kNilOptions error:&error];
         if(!policyData && error){
-            NSLog(@"Error creating JSON: %@", [error localizedDescription]);
             return;
         }
         
@@ -142,8 +144,6 @@
             }
             
         } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"%@", operation);
-            NSLog(@"%@", error);
             [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
         }];
         
@@ -154,6 +154,7 @@
 
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withSuccess:(successBlock)success withFailure:(failureBlock)failure {
     _session = !transactional;
+    username = [username lowercaseString];
     _hasUserPushId = false;
     [self authorize:username withSuccess:success withFailure:failure];
 }
@@ -161,6 +162,7 @@
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(successBlock)success withFailure:(failureBlock)failure {
     _session = !transactional;
     _hasUserPushId = pushId;
+    username = [username lowercaseString];
     [self authorize:username withSuccess:success withFailure:failure];
 }
 
