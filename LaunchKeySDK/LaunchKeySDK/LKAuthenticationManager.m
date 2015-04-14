@@ -22,7 +22,6 @@
     NSString *_launchKeyTime;
     NSString *_userName;
     NSString *_userHash;
-    NSString *_appPins;
     NSString *_deviceId;
     NSString *_userPushId;
     BOOL _session;
@@ -48,6 +47,12 @@
     });
     
     return _sharedClient;
+}
+
+- (void)initAsWhiteLabel:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
+    _isWhiteLabel = true;
+    
+    [self init:appKey withSecretKey:secretKey withPrivateKey:privateKey];
 }
 
 - (void)init:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
@@ -150,14 +155,12 @@
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withSuccess:(successBlock)success withFailure:(failureBlock)failure {
     _session = !transactional;
     _hasUserPushId = false;
-    _isWhiteLabel = false;
     [self authorize:username withSuccess:success withFailure:failure];
 }
 
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(successBlock)success withFailure:(failureBlock)failure {
     _session = !transactional;
     _hasUserPushId = pushId;
-    _isWhiteLabel = false;
     [self authorize:username withSuccess:success withFailure:failure];
 }
 
@@ -263,7 +266,6 @@
         }
         
         BOOL action = [[jsonResponse objectForKey:@"response"] boolValue];
-        _appPins = [jsonResponse objectForKey:@"app_pins"];
         _deviceId = [jsonResponse objectForKey:@"device_id"];
         _authRequest = [jsonResponse objectForKey:@"auth_request"];
         
@@ -272,7 +274,7 @@
         
     } failure:^(LKHTTPRequestOperation *operation, NSError *error) {
         if (_session && [[self getErrorCode:error] isEqualToString:@"70404"]) {
-            [self authenticationNotAuthorized:_userHash withAuthRequest:_authRequest withAppPins:_appPins withDeviceId:_deviceId];
+            [self authenticationNotAuthorized:_userHash withAuthRequest:_authRequest withDeviceId:_deviceId];
         } else if (![[self getErrorCode:error] isEqualToString:@"70403"]) {
             [self authenticationFailure:[self getMessageCode:error] withErrorCode:[self getErrorCode:error]];
         }
@@ -364,13 +366,13 @@
             //response appropriately
             if (status) {
                 if ([action isEqualToString:LKAuthenticate]) {
-                    [self authenticationAuthorized:_userHash withAuthRequest:_authRequest withUserPushId:_userPushId withAppPins:_appPins withDeviceId:_deviceId];
+                    [self authenticationAuthorized:_userHash withAuthRequest:_authRequest withUserPushId:_userPushId withDeviceId:_deviceId];
                 } else if ([action isEqualToString:LKRevoke]) {
                     [self logoutSuccessful];
                 }
             } else {
                 if ([action isEqualToString:LKAuthenticate]) {
-                    [self authenticationNotAuthorized:_userHash withAuthRequest:_authRequest withAppPins:_appPins withDeviceId:_deviceId];
+                    [self authenticationNotAuthorized:_userHash withAuthRequest:_authRequest withDeviceId:_deviceId];
                 } else if ([action isEqualToString:LKRevoke]) {
                     [self logoutSuccessful];
                 }
@@ -391,16 +393,16 @@
     }
 }
 
--(void)authenticationNotAuthorized:(NSString *)userHash withAuthRequest:(NSString*)authRequest withAppPins:(NSString*)appPins withDeviceId:(NSString*)deviceId {
+-(void)authenticationNotAuthorized:(NSString *)userHash withAuthRequest:(NSString*)authRequest withDeviceId:(NSString*)deviceId {
     if (thisFailure != NULL) {
         thisFailure(@"1000", @"User denied request");
         thisFailure = NULL;
     }
 }
 
--(void)authenticationAuthorized:(NSString *)userHash withAuthRequest:(NSString*)authRequest withUserPushId:(NSString*)pushId withAppPins:(NSString*)appPins withDeviceId:(NSString*)deviceId {
+-(void)authenticationAuthorized:(NSString *)userHash withAuthRequest:(NSString*)authRequest withUserPushId:(NSString*)pushId withDeviceId:(NSString*)deviceId {
     if (thisSuccess != NULL) {
-        thisSuccess(userHash, authRequest, pushId, appPins, deviceId);
+        thisSuccess(userHash, authRequest, pushId, deviceId);
         thisSuccess = NULL;
     }
 }

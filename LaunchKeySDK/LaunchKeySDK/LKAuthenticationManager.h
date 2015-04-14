@@ -11,7 +11,7 @@
 
 typedef void (^pollSuccessBlock)(BOOL authorized);
 typedef void (^logoutSuccessBlock)();
-typedef void (^successBlock)(NSString *userHash, NSString *authRequest, NSString* userPushId, NSString *pins, NSString *deviceId);
+typedef void (^successBlock)(NSString *userHash, NSString *authRequest, NSString* userPushId, NSString *deviceId);
 typedef void (^whiteLabelSuccessBlock)(NSString *authRequest);
 typedef void (^failureBlock)(NSString *errorMessage, NSString *errorCode);
 typedef void (^registerSuccessBlock)(NSString *qrCode, NSString *qrUrl);
@@ -29,6 +29,7 @@ typedef void (^registerSuccessBlock)(NSString *qrCode, NSString *qrUrl);
 + (LKAuthenticationManager *)sharedClient;
 
 - (void)init:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
+- (void)initAsWhiteLabel:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
 
 - (void)authorize:(NSString*)username withSuccess:(successBlock)success withFailure:(failureBlock)failure;
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(successBlock)success withFailure:(failureBlock)failure;
