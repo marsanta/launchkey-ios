@@ -49,7 +49,6 @@ Download the framework for the LaunchKey SDK and add them to your project:
 
   * [LaunchKey SDK](https://s3.amazonaws.com/launchkey-sdk/ios/LaunchKeyManager.framework.zip)
 
-__Due to the number of dependencies required by the LaunchKey SDK, it would be best to use a dependency management tool__
 
 #  <a name="usage"></a>Usage
 
