@@ -12,7 +12,7 @@
 
 @implementation LKAPIClient
 
-#define kLKAPIClientBaseURLString @"https://staging-api.launchkey.com/v1/"
+#define kLKAPIClientBaseURLString @"https://api.launchkey.com/v1/"
 
 +(LKAPIClient *)sharedClient{
     

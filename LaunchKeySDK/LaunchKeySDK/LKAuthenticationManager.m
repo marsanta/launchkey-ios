@@ -17,7 +17,7 @@
     
     NSString *_privateKeyString;
     NSString *_secretKey;
-    NSString *_appKey;
+    NSString *_rocketKey;
     NSString *_authRequest;
     NSString *_launchKeyTime;
     NSString *_userName;
@@ -49,18 +49,18 @@
     return _sharedClient;
 }
 
-- (void)initAsWhiteLabel:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
+- (void)initAsWhiteLabel:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
    
-    [self init:appKey withSecretKey:secretKey withPrivateKey:privateKey];
+    [self init:rocketKey withSecretKey:secretKey withPrivateKey:privateKey];
      _isWhiteLabel = true;
 }
 
-- (void)init:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
+- (void)init:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
     //save the private key so we can use it for later
     [LKCrypto setPrivateKey:privateKey tag:privateKeyString];
     
     _secretKey = secretKey;
-    _appKey = appKey;
+    _rocketKey = rocketKey;
     _session = true;
     _hasUserPushId = false;
      _isWhiteLabel = false;
@@ -90,7 +90,7 @@
         
         [postParams setObject:encryptedSecret forKey:@"secret_key"];
         [postParams setObject:identifier forKey:@"identifier"];
-        [postParams setObject:_appKey forKey:@"app_key"];
+        [postParams setObject:_rocketKey forKey:@"app_key"];
         
         NSData *policyData = [NSJSONSerialization dataWithJSONObject:postParams options:kNilOptions error:nil];
 
@@ -189,7 +189,7 @@
         //build the parameters for auths POST
         NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
         
-        [postParams setObject:_appKey forKey:@"app_key"];
+        [postParams setObject:_rocketKey forKey:@"app_key"];
         [postParams setObject:encryptedSecret forKey:@"secret_key"];
         [postParams setObject:signedDataString forKey:@"signature"];
         [postParams setObject:_userName forKey:@"username"];
@@ -203,7 +203,7 @@
             
             if(!_isWhiteLabel) {
                 //build the url string to call the lauhcnkey app
-                NSURL *launchKeyURL = [NSURL URLWithString:[NSString stringWithFormat:@"LK%d://appKey/%@/authRequest/%@/username/%@", LKAppId, _appKey, _authRequest, [username lowercaseString]]];
+                NSURL *launchKeyURL = [NSURL URLWithString:[NSString stringWithFormat:@"LK%d://appKey/%@/authRequest/%@/username/%@", LKAppId, _rocketKey, _authRequest, [username lowercaseString]]];
                 BOOL canOpen = [[UIApplication sharedApplication] canOpenURL:launchKeyURL];
                 
                 //if the launchkey app is installed
@@ -234,7 +234,7 @@
     //build the params for the Poll GET
     NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
     
-    [postParams setObject:_appKey forKey:@"app_key"];
+    [postParams setObject:_rocketKey forKey:@"app_key"];
     [postParams setObject:encryptedSecret forKey:@"secret_key"];
     [postParams setObject:signedDataString forKey:@"signature"];
     [postParams setObject:_authRequest forKey:@"auth_request"];
@@ -304,7 +304,7 @@
         //build the Poll GET parameters
         NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
         
-        [postParams setObject:_appKey forKey:@"app_key"];
+        [postParams setObject:_rocketKey forKey:@"app_key"];
         [postParams setObject:encryptedSecret forKey:@"secret_key"];
         [postParams setObject:signedDataString forKey:@"signature"];
         [postParams setObject:_authRequest forKey:@"auth_request"];
@@ -357,7 +357,7 @@
         //build the Logs PUT parameters
         NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
         
-        [postParams setObject:_appKey forKey:@"app_key"];
+        [postParams setObject:_rocketKey forKey:@"app_key"];
         [postParams setObject:encryptedSecret forKey:@"secret_key"];
         [postParams setObject:signedDataString forKey:@"signature"];
         [postParams setObject:action forKey:@"action"];

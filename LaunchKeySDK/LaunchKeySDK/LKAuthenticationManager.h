@@ -28,8 +28,8 @@ typedef void (^registerSuccessBlock)(NSString *qrCode, NSString *qrUrl);
 
 + (LKAuthenticationManager *)sharedClient;
 
-- (void)init:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
-- (void)initAsWhiteLabel:(NSString *)appKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
+- (void)init:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
+- (void)initAsWhiteLabel:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
 
 - (void)authorize:(NSString*)username withSuccess:(successBlock)success withFailure:(failureBlock)failure;
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(successBlock)success withFailure:(failureBlock)failure;
