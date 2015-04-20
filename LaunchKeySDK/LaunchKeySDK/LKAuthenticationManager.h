@@ -33,10 +33,11 @@ typedef void (^registerSuccessBlock)(NSString *qrCode, NSString *qrUrl);
 
 - (void)authorize:(NSString*)username withSuccess:(successBlock)success withFailure:(failureBlock)failure;
 - (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(successBlock)success withFailure:(failureBlock)failure;
+
 - (void)logout:(NSString*)authRequest withSuccess:(logoutSuccessBlock)success withFailure:(failureBlock)failure;
 - (void)isAuthorized:(NSString*)authRequest withSuccess:(pollSuccessBlock)success withFailure:(failureBlock)failure;
-- (BOOL)handleOpenUrl:(NSURL *)url;
 
+- (BOOL)handleOpenUrl:(NSURL *)url;
 
 - (void)createWhiteLabelUser:(NSString*)identifier withSuccess:(registerSuccessBlock)success withFailure:(failureBlock)failure;
 

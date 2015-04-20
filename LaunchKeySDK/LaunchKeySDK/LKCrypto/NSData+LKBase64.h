@@ -1,5 +1,5 @@
 //
-//  NSData+Base64.h
+//  NSData+LKBase64.h
 //  LaunchKey
 //
 //  Created by Kristin Tomasik on 2/2/13.

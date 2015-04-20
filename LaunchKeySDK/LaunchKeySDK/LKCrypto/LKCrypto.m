@@ -1,5 +1,5 @@
 //
-//  LKAuthenticationManager.h
+//  LKCrypto.m
 //
 //  Created by LaunchKey
 //  Copyright (c) 2013 LaunchKey, Inc. All rights reserved.
@@ -330,75 +330,6 @@ static NSString *pemPrivateFooter = @"-----END RSA PRIVATE KEY-----";
     if (keyRef) CFRelease(keyRef);
     
     return YES;
-}
-
-+ (NSData*) PKCSSignBytesSHA256withRSA:(NSData*) plainData
-{
-    NSString *privateKeyStr = [NSString stringWithFormat:@"%@",  privateKeyString];
-    NSData *privateTag = [privateKeyStr dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSMutableDictionary * queryPrivateKey = [[NSMutableDictionary alloc] init];
-    [queryPrivateKey setObject:(__bridge id)kSecClassKey forKey:(__bridge id)kSecClass];
-    [queryPrivateKey setObject:privateTag forKey:(__bridge id)kSecAttrApplicationTag];
-    [queryPrivateKey setObject:(__bridge id)kSecAttrKeyTypeRSA forKey:(__bridge id)kSecAttrKeyType];
-    [queryPrivateKey setObject:[NSNumber numberWithBool:YES] forKey:(__bridge id)kSecReturnRef];
-    
-    SecKeyRef privateKey = NULL;
-    
-    OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)queryPrivateKey, (CFTypeRef *)&privateKey);
-    
-    if (err != noErr)
-    {
-        return NULL;
-    }
-    
-    size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
-    uint8_t* signedHashBytes = malloc(signedHashBytesSize);
-    memset(signedHashBytes, 0x0, signedHashBytesSize);
-    
-    size_t hashBytesSize = CC_SHA256_DIGEST_LENGTH;
-    uint8_t* hashBytes = malloc(hashBytesSize);
-    if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], hashBytes)) {
-        return nil;
-    }
-    
-    SecKeyRawSign(privateKey,
-                  kSecPaddingPKCS1SHA256,
-                  hashBytes,
-                  hashBytesSize,
-                  signedHashBytes,
-                  &signedHashBytesSize);
-    
-    NSData* signedHash = [NSData dataWithBytes:signedHashBytes
-                                        length:(NSUInteger)signedHashBytesSize];
-    
-    if (hashBytes)
-        free(hashBytes);
-    if (signedHashBytes)
-        free(signedHashBytes);
-    
-    return signedHash;
-}
-
-+ (BOOL) PKCSVerifyBytesSHA256withRSA:(NSData*) plainData withSignature:(NSData*) signature withPublicKey:(SecKeyRef) publicKey
-{
-    size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
-    const void* signedHashBytes = [signature bytes];
-    
-    size_t hashBytesSize = CC_SHA256_DIGEST_LENGTH;
-    uint8_t* hashBytes = malloc(hashBytesSize);
-    if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], hashBytes)) {
-        return nil;
-    }
-    
-    OSStatus status = SecKeyRawVerify(publicKey,
-                                      kSecPaddingPKCS1SHA256,
-                                      hashBytes,
-                                      hashBytesSize,
-                                      signedHashBytes,
-                                      signedHashBytesSize);
-    
-    return status == errSecSuccess;
 }
 
 + (NSData *)getSignatureBytes:(NSData *)plainText

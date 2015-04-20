@@ -49,7 +49,7 @@ static unsigned char base64DecodeLookup[256] =
 #define BASE64_UNIT_SIZE 4
 
 //
-// NewBase64Decode
+// LKBase64Decode
 //
 // Decodes the base64 ASCII string in the inputBuffer to a newly malloced
 // output buffer.
@@ -124,7 +124,7 @@ void *LKBase64Decode(
 }
 
 //
-// NewBase64Encode
+// LKBase64Encode
 //
 // Encodes the arbitrary data in the inputBuffer as base64 into a newly malloced
 // output buffer.

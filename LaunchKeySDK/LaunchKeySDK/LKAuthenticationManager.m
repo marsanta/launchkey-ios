@@ -92,15 +92,9 @@
         [postParams setObject:identifier forKey:@"identifier"];
         [postParams setObject:_appKey forKey:@"app_key"];
         
+        NSData *policyData = [NSJSONSerialization dataWithJSONObject:postParams options:kNilOptions error:nil];
 
-        NSError *error;
-        
-        NSData *policyData = [NSJSONSerialization dataWithJSONObject:postParams options:kNilOptions error:&error];
-        if(!policyData && error){
-            return;
-        }
-        
-        //NSJSONSerialization converts a URL string from http://... to http:\/\/... remove the extra escapes
+        //remove the extra escapes
         NSString *policyStr = [[NSString alloc] initWithData:policyData encoding:NSUTF8StringEncoding];
         policyStr = [policyStr stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
         policyData = [policyStr dataUsingEncoding:NSUTF8StringEncoding];
@@ -109,8 +103,10 @@
         //sign the encrypted package
         NSString *signedDataString = [self getSignatureOnBodyWithoutDecoding:policyData];
 
+        //strip the new lines
         signedDataString = [signedDataString stringByReplacingOccurrencesOfString:@"\r\n" withString:@""];
 
+        //url encode the signature
         NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)signedDataString, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
         
         NSString *postPath = [NSString stringWithFormat:@"users?signature=%@", encodedString];
@@ -119,21 +115,25 @@
         [[LKAPIClient sharedClient] JSONpostPath:postPath parameters:policyData success:^(LKHTTPRequestOperation *operation, id responseObject) {
             
             @try {
+                //get the cipher and the data
                 NSString *cipher = [[responseObject objectForKey:@"response"] objectForKey:@"cipher"];
                 NSString *dataString = [[responseObject objectForKey:@"response"] objectForKey:@"data"];
                 
+                //RSA decrypt with the Rocket private key
                 NSString *decryptedCipher = [LKCrypto decryptRSA:cipher key:privateKeyString];
                 
+                //extract the token and salt
                 NSString *token = [decryptedCipher substringToIndex:32];
                 NSString *salt = [decryptedCipher substringWithRange:NSMakeRange(32, 16)];
                 
+                //base64 decode
                 NSData *dataStringData = [NSData dataFromBase64String:dataString];
                 
+                //decrypt with token and salt
                 NSData *decryptedData = [dataStringData LKAES256DecryptWithKey:token withSalt:salt];
-                
-                
                 NSString *unencryptedString = [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
                 
+                //convert to JSON dictionary
                 NSMutableDictionary *dictionary = [NSJSONSerialization JSONObjectWithData: [unencryptedString dataUsingEncoding:NSUTF8StringEncoding]
                                                                                   options: NSJSONReadingMutableContainers
                                                                                     error: nil];
@@ -487,7 +487,7 @@
 
 - (NSString*)getSignatureOnBodyWithoutDecoding:(NSData*)bodyData {
     //get the signature bytes on the encryptes data
-    NSData *signedData = [LKCrypto PKCSSignBytesSHA256withRSA:bodyData];
+    NSData *signedData = [LKCrypto getSignatureBytes:bodyData];
     //base64 encode them
     NSString *signedDataString = [signedData base64EncodedString];
     

@@ -1,5 +1,5 @@
 //
-//  NSData+AES256.m
+//  NSData+LKAES256.m
 //  LaunchKey
 //
 //  Created by Kristin Tomasik on 2/2/13.

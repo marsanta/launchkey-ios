@@ -1,5 +1,5 @@
 //
-//  NSData+AES256.h
+//  NSData+LKAES256.h
 //  LaunchKey
 //
 //  Created by Kristin Tomasik on 2/2/13.
@@ -11,8 +11,8 @@
 
 @interface NSData (LKAES256)
 
--(NSData *) LKAES256EncryptWithKey:(NSString *)key;
--(NSData *) LKAES256DecryptWithKey:(NSString *)key;
+-(NSData *)LKAES256EncryptWithKey:(NSString *)key;
+-(NSData *)LKAES256DecryptWithKey:(NSString *)key;
 -(NSData *)LKAES256DecryptWithKey:(NSString *)key withSalt:(NSString*)salt;
 
 @end
