@@ -40,7 +40,7 @@ The framework, source, and doc files are available through either CocoaPods or G
 _CocoaPods Example:_
 
 ```
-$ sudo gem install launchkey-sdk
+COMING SOON
 ```
 
 ## <a name="manual-installation"></a>Manual Installation (Not Suggested)
