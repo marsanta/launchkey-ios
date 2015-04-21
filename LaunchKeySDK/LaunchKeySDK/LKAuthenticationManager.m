@@ -457,7 +457,7 @@
                                                  repeats:YES];
     
     [self performSelector:@selector(stopPollingAndTimeout:)
-               withObject:NO
+               withObject:NULL
                afterDelay:LKTimeout];
 }
 

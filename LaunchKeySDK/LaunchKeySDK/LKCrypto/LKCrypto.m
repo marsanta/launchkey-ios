@@ -223,9 +223,6 @@ static NSString *pemPrivateFooter = @"-----END RSA PRIVATE KEY-----";
     else
     {
         return NO;
-        
-        strippedKey = pemPublicKeyString;
-        isX509 = NO;
     }
     
     NSData *strippedPublicKeyData = [NSData dataFromBase64String:strippedKey];
@@ -380,7 +377,7 @@ static NSString *pemPrivateFooter = @"-----END RSA PRIVATE KEY-----";
 
 + (NSData *)getHash256Bytes:(NSData *)plainText {
     unsigned char hash[CC_SHA256_DIGEST_LENGTH];
-    if ( CC_SHA256([plainText bytes], [plainText length], hash) ) {
+    if ( CC_SHA256([plainText bytes], (int)[plainText length], hash) ) {
         NSData *sha256 = [NSData dataWithBytes:hash length:CC_SHA256_DIGEST_LENGTH];
         return sha256;
     }
