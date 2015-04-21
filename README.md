@@ -27,7 +27,7 @@ Utilization of the LaunchKey SDK requires the following items:
  * An application - A new application can be created in the [LaunchKey Dashboard](https://dashboard.launchkey.com/).
    From the application, you will need the following items found in the keys section of the application details:
 
-    * The app key
+    * The rocket key
     * The secret key
     * The private key
 
@@ -40,7 +40,7 @@ The framework, source, and doc files are available through either CocoaPods or G
 _CocoaPods Example:_
 
 ```
-COMING SOON
+pod ‘launchkey-ios’
 ```
 
 ## <a name="manual-installation"></a>Manual Installation (Not Suggested)
@@ -55,7 +55,7 @@ Download the framework for the LaunchKey SDK and add them to your project:
   1. Initialize the LKAuthenticationManager
 
     ```objective-c
-    [[LKAuthenticationManager sharedClient] init:@"Your App Key"
+    [[LKAuthenticationManager sharedClient] init:@"Your Rocket Key"
                                    withSecretKey:@"Your Secret Key"
                                   withPrivateKey:@"Your Private Key"];
     ```

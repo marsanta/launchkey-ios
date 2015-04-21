@@ -1,4 +1,3 @@
-
 Pod::Spec.new do |s|
 
   s.name         = "launchkey-ios"
@@ -15,10 +14,9 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, "6.1"
 
-  s.source       = { :git => "https://github.com/LaunchKey/launchkey-ios.git", :tag => "v1.0.0" }
+  s.source       = { :git => "https://github.com/LaunchKey/launchkey-ios.git", :tag => "v1.0.1" }
 
-  s.source_files =  'LaunchKeySDK.framework/Versions/A/Headers/*.h'
-  s.vendored_frameworks = 'LaunchKeySDK.framework'
+  s.source_files =  'LaunchKeySDK/**/*.{h,m}', 'LaunchKeySDK/*.{h,m}'
   
   s.frameworks = "CoreData", "UIKit", "Foundation", "Security"
 
