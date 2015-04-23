@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "LKHTTPRequestOperation.h"
+#import "LKSDKHTTPRequestOperation.h"
 #import <objc/runtime.h>
 
 // Workaround for change in imp_implementationWithBlock() with Xcode 4.5
@@ -33,7 +33,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wstrict-selector-match"
 
-NSSet * AFContentTypesFromHTTPHeader(NSString *string) {
+NSSet * LKSDKAFContentTypesFromHTTPHeader(NSString *string) {
     if (!string) {
         return nil;
     }
@@ -107,13 +107,13 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 
 #pragma mark -
 
-@interface LKHTTPRequestOperation ()
+@interface LKSDKHTTPRequestOperation ()
 @property (readwrite, nonatomic, strong) NSURLRequest *request;
 @property (readwrite, nonatomic, strong) NSHTTPURLResponse *response;
 @property (readwrite, nonatomic, strong) NSError *HTTPError;
 @end
 
-@implementation LKHTTPRequestOperation
+@implementation LKSDKHTTPRequestOperation
 @synthesize HTTPError = _HTTPError;
 @synthesize successCallbackQueue = _successCallbackQueue;
 @synthesize failureCallbackQueue = _failureCallbackQueue;
@@ -142,18 +142,18 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
             [userInfo setValue:self.responseString forKey:NSLocalizedRecoverySuggestionErrorKey];
             [userInfo setValue:[self.request URL] forKey:NSURLErrorFailingURLErrorKey];
-            [userInfo setValue:self.request forKey:LKNetworkingOperationFailingURLRequestErrorKey];
-            [userInfo setValue:self.response forKey:LKNetworkingOperationFailingURLResponseErrorKey];
+            [userInfo setValue:self.request forKey:LKSDKNetworkingOperationFailingURLRequestErrorKey];
+            [userInfo setValue:self.response forKey:LKSDKNetworkingOperationFailingURLResponseErrorKey];
 
             if (![self hasAcceptableStatusCode]) {
                 NSUInteger statusCode = ([self.response isKindOfClass:[NSHTTPURLResponse class]]) ? (NSUInteger)[self.response statusCode] : 200;
                 [userInfo setValue:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Expected status code in (%@), got %d", @"AFNetworking", nil), AFStringFromIndexSet([[self class] acceptableStatusCodes]), statusCode] forKey:NSLocalizedDescriptionKey];
-                self.HTTPError = [[NSError alloc] initWithDomain:LKNetworkingErrorDomain code:NSURLErrorBadServerResponse userInfo:userInfo];
+                self.HTTPError = [[NSError alloc] initWithDomain:LKSDKNetworkingErrorDomain code:NSURLErrorBadServerResponse userInfo:userInfo];
             } else if (![self hasAcceptableContentType]) {
                 // Don't invalidate content type if there is no content
                 if ([self.responseData length] > 0) {
                     [userInfo setValue:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Expected content type %@, got %@", @"AFNetworking", nil), [[self class] acceptableContentTypes], [self.response MIMEType]] forKey:NSLocalizedDescriptionKey];
-                    self.HTTPError = [[NSError alloc] initWithDomain:LKNetworkingErrorDomain code:NSURLErrorCannotDecodeContentData userInfo:userInfo];
+                    self.HTTPError = [[NSError alloc] initWithDomain:LKSDKNetworkingErrorDomain code:NSURLErrorCannotDecodeContentData userInfo:userInfo];
                 }
             }
         }
@@ -259,8 +259,8 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
     }
 }
 
-- (void)setCompletionBlockWithSuccess:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-                              failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
+- (void)setCompletionBlockWithSuccess:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+                              failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure
 {
     // completionBlock is manually nilled out in AFURLConnectionOperation to break the retain cycle.
 #pragma clang diagnostic push
@@ -311,11 +311,11 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 }
 
 + (BOOL)canProcessRequest:(NSURLRequest *)request {
-    if ([[self class] isEqual:[LKHTTPRequestOperation class]]) {
+    if ([[self class] isEqual:[LKSDKHTTPRequestOperation class]]) {
         return YES;
     }
 
-    return [[self acceptableContentTypes] intersectsSet:AFContentTypesFromHTTPHeader([request valueForHTTPHeaderField:@"Accept"])];
+    return [[self acceptableContentTypes] intersectsSet:LKSDKAFContentTypesFromHTTPHeader([request valueForHTTPHeaderField:@"Accept"])];
 }
 
 @end

@@ -5,21 +5,21 @@
 //  Copyright (c) 2013 LaunchKey, Inc. All rights reserved.
 //
 
-#import "LKAPIClient.h"
-#import "LKJSONRequestOperation.h"
-#import "LKCrypto.h"
+#import "LKSDKAPIClient.h"
+#import "LKSDKJSONRequestOperation.h"
+#import "LKSDKCrypto.h"
 #import "NSData+LKBase64.h"
 
-@implementation LKAPIClient
+@implementation LKSDKAPIClient
 
 #define kLKAPIClientBaseURLString @"https://api.launchkey.com/v1/"
 
-+(LKAPIClient *)sharedClient{
++(LKSDKAPIClient *)sharedClient{
     
-    static LKAPIClient *_sharedClient = nil;
+    static LKSDKAPIClient *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[LKAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kLKAPIClientBaseURLString]];
+        _sharedClient = [[LKSDKAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kLKAPIClientBaseURLString]];
         [_sharedClient setParameterEncoding:AFJSONParameterEncoding];
     });
     
@@ -32,7 +32,7 @@
         return nil;
     }
     
-    [self registerHTTPOperationClass:[LKJSONRequestOperation class]];
+    [self registerHTTPOperationClass:[LKSDKJSONRequestOperation class]];
 	[self setDefaultHeader:@"Accept" value:@"application/json"];
     
     return self;

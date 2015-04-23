@@ -27,24 +27,24 @@
 		638778571AD6E31F00364D6E /* LaunchKeySDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 638778561AD6E31F00364D6E /* LaunchKeySDK.h */; };
 		6387785F1AD6E31F00364D6E /* libLaunchKeySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 638778531AD6E31F00364D6E /* libLaunchKeySDK.a */; };
 		6387786E1AD6E38D00364D6E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387786D1AD6E38D00364D6E /* Security.framework */; };
-		638778791AD6E3F800364D6E /* LKHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778711AD6E3F800364D6E /* LKHTTPClient.m */; };
-		6387787A1AD6E3F800364D6E /* LKHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778731AD6E3F800364D6E /* LKHTTPRequestOperation.m */; };
-		6387787B1AD6E3F800364D6E /* LKJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778751AD6E3F800364D6E /* LKJSONRequestOperation.m */; };
-		6387787C1AD6E3F800364D6E /* LKURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778781AD6E3F800364D6E /* LKURLConnectionOperation.m */; };
-		638778801AD6E42100364D6E /* LKAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6387787F1AD6E42100364D6E /* LKAPIClient.m */; };
-		638778861AD6E44400364D6E /* LKCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778831AD6E44400364D6E /* LKCrypto.m */; };
+		638778791AD6E3F800364D6E /* LKSDKHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778711AD6E3F800364D6E /* LKSDKHTTPClient.m */; };
+		6387787A1AD6E3F800364D6E /* LKSDKHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778731AD6E3F800364D6E /* LKSDKHTTPRequestOperation.m */; };
+		6387787B1AD6E3F800364D6E /* LKSDKJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778751AD6E3F800364D6E /* LKSDKJSONRequestOperation.m */; };
+		6387787C1AD6E3F800364D6E /* LKSDKURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778781AD6E3F800364D6E /* LKSDKURLConnectionOperation.m */; };
+		638778801AD6E42100364D6E /* LKSDKAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6387787F1AD6E42100364D6E /* LKSDKAPIClient.m */; };
+		638778861AD6E44400364D6E /* LKSDKCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778831AD6E44400364D6E /* LKSDKCrypto.m */; };
 		638778871AD6E44400364D6E /* NSData+LKBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778851AD6E44400364D6E /* NSData+LKBase64.m */; };
 		638778881AD6E55C00364D6E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387786D1AD6E38D00364D6E /* Security.framework */; };
 		6387788C1AD6EF6100364D6E /* LKAuthenticationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6387788A1AD6EF6100364D6E /* LKAuthenticationManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6387788D1AD6EF6100364D6E /* LKAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6387788B1AD6EF6100364D6E /* LKAuthenticationManager.m */; };
-		638778981AD6F9CC00364D6E /* LKCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778821AD6E44400364D6E /* LKCrypto.h */; };
+		638778981AD6F9CC00364D6E /* LKSDKCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778821AD6E44400364D6E /* LKSDKCrypto.h */; };
 		638778991AD6F9CC00364D6E /* NSData+LKBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778841AD6E44400364D6E /* NSData+LKBase64.h */; };
-		6387789A1AD6F9CC00364D6E /* LKAPIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 6387787E1AD6E42100364D6E /* LKAPIClient.h */; };
-		6387789B1AD6F9CC00364D6E /* LKHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778701AD6E3F800364D6E /* LKHTTPClient.h */; };
-		6387789C1AD6F9CC00364D6E /* LKHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778721AD6E3F800364D6E /* LKHTTPRequestOperation.h */; };
-		6387789D1AD6F9CC00364D6E /* LKJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778741AD6E3F800364D6E /* LKJSONRequestOperation.h */; };
+		6387789A1AD6F9CC00364D6E /* LKSDKAPIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 6387787E1AD6E42100364D6E /* LKSDKAPIClient.h */; };
+		6387789B1AD6F9CC00364D6E /* LKSDKHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778701AD6E3F800364D6E /* LKSDKHTTPClient.h */; };
+		6387789C1AD6F9CC00364D6E /* LKSDKHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778721AD6E3F800364D6E /* LKSDKHTTPRequestOperation.h */; };
+		6387789D1AD6F9CC00364D6E /* LKSDKJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778741AD6E3F800364D6E /* LKSDKJSONRequestOperation.h */; };
 		6387789E1AD6F9CC00364D6E /* LKNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778761AD6E3F800364D6E /* LKNetworking.h */; };
-		6387789F1AD6F9CC00364D6E /* LKURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778771AD6E3F800364D6E /* LKURLConnectionOperation.h */; };
+		6387789F1AD6F9CC00364D6E /* LKSDKURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778771AD6E3F800364D6E /* LKSDKURLConnectionOperation.h */; };
 		638778A11AD700FE00364D6E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 638778A01AD700FE00364D6E /* Foundation.framework */; };
 		638778A31AD7011300364D6E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 638778A21AD7011300364D6E /* UIKit.framework */; };
 /* End PBXBuildFile section */
@@ -88,19 +88,19 @@
 		6387785E1AD6E31F00364D6E /* LaunchKeySDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LaunchKeySDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		638778641AD6E31F00364D6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6387786D1AD6E38D00364D6E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		638778701AD6E3F800364D6E /* LKHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKHTTPClient.h; path = LKNetworking/LKHTTPClient.h; sourceTree = "<group>"; };
-		638778711AD6E3F800364D6E /* LKHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKHTTPClient.m; path = LKNetworking/LKHTTPClient.m; sourceTree = "<group>"; };
-		638778721AD6E3F800364D6E /* LKHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKHTTPRequestOperation.h; path = LKNetworking/LKHTTPRequestOperation.h; sourceTree = "<group>"; };
-		638778731AD6E3F800364D6E /* LKHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKHTTPRequestOperation.m; path = LKNetworking/LKHTTPRequestOperation.m; sourceTree = "<group>"; };
-		638778741AD6E3F800364D6E /* LKJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKJSONRequestOperation.h; path = LKNetworking/LKJSONRequestOperation.h; sourceTree = "<group>"; };
-		638778751AD6E3F800364D6E /* LKJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKJSONRequestOperation.m; path = LKNetworking/LKJSONRequestOperation.m; sourceTree = "<group>"; };
+		638778701AD6E3F800364D6E /* LKSDKHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKSDKHTTPClient.h; path = LKNetworking/LKSDKHTTPClient.h; sourceTree = "<group>"; };
+		638778711AD6E3F800364D6E /* LKSDKHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKSDKHTTPClient.m; path = LKNetworking/LKSDKHTTPClient.m; sourceTree = "<group>"; };
+		638778721AD6E3F800364D6E /* LKSDKHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKSDKHTTPRequestOperation.h; path = LKNetworking/LKSDKHTTPRequestOperation.h; sourceTree = "<group>"; };
+		638778731AD6E3F800364D6E /* LKSDKHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKSDKHTTPRequestOperation.m; path = LKNetworking/LKSDKHTTPRequestOperation.m; sourceTree = "<group>"; };
+		638778741AD6E3F800364D6E /* LKSDKJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKSDKJSONRequestOperation.h; path = LKNetworking/LKSDKJSONRequestOperation.h; sourceTree = "<group>"; };
+		638778751AD6E3F800364D6E /* LKSDKJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKSDKJSONRequestOperation.m; path = LKNetworking/LKSDKJSONRequestOperation.m; sourceTree = "<group>"; };
 		638778761AD6E3F800364D6E /* LKNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKNetworking.h; path = LKNetworking/LKNetworking.h; sourceTree = "<group>"; };
-		638778771AD6E3F800364D6E /* LKURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKURLConnectionOperation.h; path = LKNetworking/LKURLConnectionOperation.h; sourceTree = "<group>"; };
-		638778781AD6E3F800364D6E /* LKURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKURLConnectionOperation.m; path = LKNetworking/LKURLConnectionOperation.m; sourceTree = "<group>"; };
-		6387787E1AD6E42100364D6E /* LKAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKAPIClient.h; path = LKAPIClient/LKAPIClient.h; sourceTree = "<group>"; };
-		6387787F1AD6E42100364D6E /* LKAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKAPIClient.m; path = LKAPIClient/LKAPIClient.m; sourceTree = "<group>"; };
-		638778821AD6E44400364D6E /* LKCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKCrypto.h; path = LKCrypto/LKCrypto.h; sourceTree = "<group>"; };
-		638778831AD6E44400364D6E /* LKCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKCrypto.m; path = LKCrypto/LKCrypto.m; sourceTree = "<group>"; };
+		638778771AD6E3F800364D6E /* LKSDKURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKSDKURLConnectionOperation.h; path = LKNetworking/LKSDKURLConnectionOperation.h; sourceTree = "<group>"; };
+		638778781AD6E3F800364D6E /* LKSDKURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKSDKURLConnectionOperation.m; path = LKNetworking/LKSDKURLConnectionOperation.m; sourceTree = "<group>"; };
+		6387787E1AD6E42100364D6E /* LKSDKAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKSDKAPIClient.h; path = LKAPIClient/LKSDKAPIClient.h; sourceTree = "<group>"; };
+		6387787F1AD6E42100364D6E /* LKSDKAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKSDKAPIClient.m; path = LKAPIClient/LKSDKAPIClient.m; sourceTree = "<group>"; };
+		638778821AD6E44400364D6E /* LKSDKCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LKSDKCrypto.h; path = LKCrypto/LKSDKCrypto.h; sourceTree = "<group>"; };
+		638778831AD6E44400364D6E /* LKSDKCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LKSDKCrypto.m; path = LKCrypto/LKSDKCrypto.m; sourceTree = "<group>"; };
 		638778841AD6E44400364D6E /* NSData+LKBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+LKBase64.h"; path = "LKCrypto/NSData+LKBase64.h"; sourceTree = "<group>"; };
 		638778851AD6E44400364D6E /* NSData+LKBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+LKBase64.m"; path = "LKCrypto/NSData+LKBase64.m"; sourceTree = "<group>"; };
 		6387788A1AD6EF6100364D6E /* LKAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LKAuthenticationManager.h; sourceTree = "<group>"; };
@@ -186,15 +186,15 @@
 		6387786F1AD6E3E500364D6E /* LKNetworking */ = {
 			isa = PBXGroup;
 			children = (
-				638778701AD6E3F800364D6E /* LKHTTPClient.h */,
-				638778711AD6E3F800364D6E /* LKHTTPClient.m */,
-				638778721AD6E3F800364D6E /* LKHTTPRequestOperation.h */,
-				638778731AD6E3F800364D6E /* LKHTTPRequestOperation.m */,
-				638778741AD6E3F800364D6E /* LKJSONRequestOperation.h */,
-				638778751AD6E3F800364D6E /* LKJSONRequestOperation.m */,
+				638778701AD6E3F800364D6E /* LKSDKHTTPClient.h */,
+				638778711AD6E3F800364D6E /* LKSDKHTTPClient.m */,
+				638778721AD6E3F800364D6E /* LKSDKHTTPRequestOperation.h */,
+				638778731AD6E3F800364D6E /* LKSDKHTTPRequestOperation.m */,
+				638778741AD6E3F800364D6E /* LKSDKJSONRequestOperation.h */,
+				638778751AD6E3F800364D6E /* LKSDKJSONRequestOperation.m */,
 				638778761AD6E3F800364D6E /* LKNetworking.h */,
-				638778771AD6E3F800364D6E /* LKURLConnectionOperation.h */,
-				638778781AD6E3F800364D6E /* LKURLConnectionOperation.m */,
+				638778771AD6E3F800364D6E /* LKSDKURLConnectionOperation.h */,
+				638778781AD6E3F800364D6E /* LKSDKURLConnectionOperation.m */,
 			);
 			name = LKNetworking;
 			sourceTree = "<group>";
@@ -202,8 +202,8 @@
 		6387787D1AD6E3FD00364D6E /* LKAPIClient */ = {
 			isa = PBXGroup;
 			children = (
-				6387787E1AD6E42100364D6E /* LKAPIClient.h */,
-				6387787F1AD6E42100364D6E /* LKAPIClient.m */,
+				6387787E1AD6E42100364D6E /* LKSDKAPIClient.h */,
+				6387787F1AD6E42100364D6E /* LKSDKAPIClient.m */,
 			);
 			name = LKAPIClient;
 			sourceTree = "<group>";
@@ -213,8 +213,8 @@
 			children = (
 				633808301ADC6C8500E13A1B /* NSData+LKAES256.h */,
 				633808311ADC6C8500E13A1B /* NSData+LKAES256.m */,
-				638778821AD6E44400364D6E /* LKCrypto.h */,
-				638778831AD6E44400364D6E /* LKCrypto.m */,
+				638778821AD6E44400364D6E /* LKSDKCrypto.h */,
+				638778831AD6E44400364D6E /* LKSDKCrypto.m */,
 				638778841AD6E44400364D6E /* NSData+LKBase64.h */,
 				638778851AD6E44400364D6E /* NSData+LKBase64.m */,
 			);
@@ -230,14 +230,14 @@
 			files = (
 				6387788C1AD6EF6100364D6E /* LKAuthenticationManager.h in Headers */,
 				633808321ADC6C8500E13A1B /* NSData+LKAES256.h in Headers */,
-				638778981AD6F9CC00364D6E /* LKCrypto.h in Headers */,
+				638778981AD6F9CC00364D6E /* LKSDKCrypto.h in Headers */,
 				638778991AD6F9CC00364D6E /* NSData+LKBase64.h in Headers */,
-				6387789A1AD6F9CC00364D6E /* LKAPIClient.h in Headers */,
-				6387789B1AD6F9CC00364D6E /* LKHTTPClient.h in Headers */,
-				6387789C1AD6F9CC00364D6E /* LKHTTPRequestOperation.h in Headers */,
-				6387789D1AD6F9CC00364D6E /* LKJSONRequestOperation.h in Headers */,
+				6387789A1AD6F9CC00364D6E /* LKSDKAPIClient.h in Headers */,
+				6387789B1AD6F9CC00364D6E /* LKSDKHTTPClient.h in Headers */,
+				6387789C1AD6F9CC00364D6E /* LKSDKHTTPRequestOperation.h in Headers */,
+				6387789D1AD6F9CC00364D6E /* LKSDKJSONRequestOperation.h in Headers */,
 				6387789E1AD6F9CC00364D6E /* LKNetworking.h in Headers */,
-				6387789F1AD6F9CC00364D6E /* LKURLConnectionOperation.h in Headers */,
+				6387789F1AD6F9CC00364D6E /* LKSDKURLConnectionOperation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,15 +366,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6387787C1AD6E3F800364D6E /* LKURLConnectionOperation.m in Sources */,
+				6387787C1AD6E3F800364D6E /* LKSDKURLConnectionOperation.m in Sources */,
 				633808331ADC6C8500E13A1B /* NSData+LKAES256.m in Sources */,
-				6387787A1AD6E3F800364D6E /* LKHTTPRequestOperation.m in Sources */,
-				638778791AD6E3F800364D6E /* LKHTTPClient.m in Sources */,
+				6387787A1AD6E3F800364D6E /* LKSDKHTTPRequestOperation.m in Sources */,
+				638778791AD6E3F800364D6E /* LKSDKHTTPClient.m in Sources */,
 				638778871AD6E44400364D6E /* NSData+LKBase64.m in Sources */,
-				6387787B1AD6E3F800364D6E /* LKJSONRequestOperation.m in Sources */,
-				638778861AD6E44400364D6E /* LKCrypto.m in Sources */,
+				6387787B1AD6E3F800364D6E /* LKSDKJSONRequestOperation.m in Sources */,
+				638778861AD6E44400364D6E /* LKSDKCrypto.m in Sources */,
 				6387788D1AD6EF6100364D6E /* LKAuthenticationManager.m in Sources */,
-				638778801AD6E42100364D6E /* LKAPIClient.m in Sources */,
+				638778801AD6E42100364D6E /* LKSDKAPIClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

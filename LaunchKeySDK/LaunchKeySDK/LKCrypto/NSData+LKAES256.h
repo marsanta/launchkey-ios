@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface NSData (LKAES256)
+@interface NSData (LKSDKAES256)
 
 -(NSData *)LKAES256EncryptWithKey:(NSString *)key;
 -(NSData *)LKAES256DecryptWithKey:(NSString *)key;

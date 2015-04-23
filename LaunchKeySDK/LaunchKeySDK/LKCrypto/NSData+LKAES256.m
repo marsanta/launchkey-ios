@@ -10,7 +10,7 @@
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonKeyDerivation.h>
 
-@implementation NSData (LKAES256)
+@implementation NSData (LKSDKAES256)
 
 NSData* iv;
 

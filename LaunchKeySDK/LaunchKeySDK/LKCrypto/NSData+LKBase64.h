@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-void *LKBase64Decode(
+void *LKSDKBase64Decode(
                      const char *inputBuffer,
                      size_t length,
                      size_t *outputLength);
 
-char *LKBase64Encode(
+char *LKSDKBase64Encode(
                      const void *inputBuffer,
                      size_t length,
                      bool separateLines,

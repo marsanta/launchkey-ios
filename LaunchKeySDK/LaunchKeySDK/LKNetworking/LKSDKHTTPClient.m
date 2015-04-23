@@ -22,8 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "LKHTTPClient.h"
-#import "LKHTTPRequestOperation.h"
+#import "LKSDKHTTPClient.h"
+#import "LKSDKHTTPRequestOperation.h"
 
 #import <Availability.h>
 
@@ -89,7 +89,7 @@ static NSString * AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(NS
 
 #pragma mark -
 
-@interface LKQueryStringPair : NSObject
+@interface LKSDKQueryStringPair : NSObject
 @property (readwrite, nonatomic, strong) id field;
 @property (readwrite, nonatomic, strong) id value;
 
@@ -98,7 +98,7 @@ static NSString * AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(NS
 - (NSString *)URLEncodedStringValueWithEncoding:(NSStringEncoding)stringEncoding;
 @end
 
-@implementation LKQueryStringPair
+@implementation LKSDKQueryStringPair
 @synthesize field = _field;
 @synthesize value = _value;
 
@@ -126,23 +126,23 @@ static NSString * AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(NS
 
 #pragma mark -
 
-extern NSArray * LKQueryStringPairsFromDictionary(NSDictionary *dictionary);
-extern NSArray * LKQueryStringPairsFromKeyAndValue(NSString *key, id value);
+extern NSArray * LKSDKQueryStringPairsFromDictionary(NSDictionary *dictionary);
+extern NSArray * LKSDKQueryStringPairsFromKeyAndValue(NSString *key, id value);
 
-NSString * AFQueryStringFromParametersWithEncoding(NSDictionary *parameters, NSStringEncoding stringEncoding) {
+NSString * LKSDKAFQueryStringFromParametersWithEncoding(NSDictionary *parameters, NSStringEncoding stringEncoding) {
     NSMutableArray *mutablePairs = [NSMutableArray array];
-    for (LKQueryStringPair *pair in LKQueryStringPairsFromDictionary(parameters)) {
+    for (LKSDKQueryStringPair *pair in LKSDKQueryStringPairsFromDictionary(parameters)) {
         [mutablePairs addObject:[pair URLEncodedStringValueWithEncoding:stringEncoding]];
     }
 
     return [mutablePairs componentsJoinedByString:@"&"];
 }
 
-NSArray * LKQueryStringPairsFromDictionary(NSDictionary *dictionary) {
-    return LKQueryStringPairsFromKeyAndValue(nil, dictionary);
+NSArray * LKSDKQueryStringPairsFromDictionary(NSDictionary *dictionary) {
+    return LKSDKQueryStringPairsFromKeyAndValue(nil, dictionary);
 }
 
-NSArray * LKQueryStringPairsFromKeyAndValue(NSString *key, id value) {
+NSArray * LKSDKQueryStringPairsFromKeyAndValue(NSString *key, id value) {
     NSMutableArray *mutableQueryStringComponents = [NSMutableArray array];
 
     if ([value isKindOfClass:[NSDictionary class]]) {
@@ -152,27 +152,27 @@ NSArray * LKQueryStringPairsFromKeyAndValue(NSString *key, id value) {
         for (id nestedKey in [dictionary.allKeys sortedArrayUsingDescriptors:@[ sortDescriptor ]]) {
             id nestedValue = [dictionary objectForKey:nestedKey];
             if (nestedValue) {
-                [mutableQueryStringComponents addObjectsFromArray:LKQueryStringPairsFromKeyAndValue((key ? [NSString stringWithFormat:@"%@[%@]", key, nestedKey] : nestedKey), nestedValue)];
+                [mutableQueryStringComponents addObjectsFromArray:LKSDKQueryStringPairsFromKeyAndValue((key ? [NSString stringWithFormat:@"%@[%@]", key, nestedKey] : nestedKey), nestedValue)];
             }
         }
     } else if ([value isKindOfClass:[NSArray class]]) {
         NSArray *array = value;
         for (id nestedValue in array) {
-            [mutableQueryStringComponents addObjectsFromArray:LKQueryStringPairsFromKeyAndValue([NSString stringWithFormat:@"%@[]", key], nestedValue)];
+            [mutableQueryStringComponents addObjectsFromArray:LKSDKQueryStringPairsFromKeyAndValue([NSString stringWithFormat:@"%@[]", key], nestedValue)];
         }
     } else if ([value isKindOfClass:[NSSet class]]) {
         NSSet *set = value;
         for (id obj in set) {
-            [mutableQueryStringComponents addObjectsFromArray:LKQueryStringPairsFromKeyAndValue(key, obj)];
+            [mutableQueryStringComponents addObjectsFromArray:LKSDKQueryStringPairsFromKeyAndValue(key, obj)];
         }
     } else {
-        [mutableQueryStringComponents addObject:[[LKQueryStringPair alloc] initWithField:key value:value]];
+        [mutableQueryStringComponents addObject:[[LKSDKQueryStringPair alloc] initWithField:key value:value]];
     }
 
     return mutableQueryStringComponents;
 }
 
-@interface LKStreamingMultipartFormData : NSObject <AFMultipartFormData>
+@interface LKSDKStreamingMultipartFormData : NSObject <AFMultipartFormData>
 - (id)initWithURLRequest:(NSMutableURLRequest *)urlRequest
           stringEncoding:(NSStringEncoding)encoding;
 
@@ -181,7 +181,7 @@ NSArray * LKQueryStringPairsFromKeyAndValue(NSString *key, id value) {
 
 #pragma mark -
 
-@interface LKHTTPClient ()
+@interface LKSDKHTTPClient ()
 @property (readwrite, nonatomic, strong) NSURL *baseURL;
 @property (readwrite, nonatomic, strong) NSMutableArray *registeredHTTPOperationClassNames;
 @property (readwrite, nonatomic, strong) NSMutableDictionary *defaultHeaders;
@@ -199,7 +199,7 @@ NSArray * LKQueryStringPairsFromKeyAndValue(NSString *key, id value) {
 #endif
 @end
 
-@implementation LKHTTPClient
+@implementation LKSDKHTTPClient
 @synthesize baseURL = _baseURL;
 @synthesize stringEncoding = _stringEncoding;
 @synthesize parameterEncoding = _parameterEncoding;
@@ -417,7 +417,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 #pragma mark -
 
 - (BOOL)registerHTTPOperationClass:(Class)operationClass {
-    if (![operationClass isSubclassOfClass:[LKHTTPRequestOperation class]]) {
+    if (![operationClass isSubclassOfClass:[LKSDKHTTPRequestOperation class]]) {
         return NO;
     }
 
@@ -515,7 +515,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 
     if (parameters) {
         if ([method isEqualToString:@"GET"] || [method isEqualToString:@"HEAD"] || [method isEqualToString:@"DELETE"]) {
-            url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:[path rangeOfString:@"?"].location == NSNotFound ? @"?%@" : @"&%@", AFQueryStringFromParametersWithEncoding(parameters, self.stringEncoding)]];
+            url = [NSURL URLWithString:[[url absoluteString] stringByAppendingFormat:[path rangeOfString:@"?"].location == NSNotFound ? @"?%@" : @"&%@", LKSDKAFQueryStringFromParametersWithEncoding(parameters, self.stringEncoding)]];
             [request setURL:url];
         } else {
             NSString *charset = (__bridge NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(self.stringEncoding));
@@ -524,7 +524,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
             switch (self.parameterEncoding) {
                 case AFFormURLParameterEncoding:;
                     [request setValue:[NSString stringWithFormat:@"application/x-www-form-urlencoded; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
-                    [request setHTTPBody:[AFQueryStringFromParametersWithEncoding(parameters, self.stringEncoding) dataUsingEncoding:self.stringEncoding]];
+                    [request setHTTPBody:[LKSDKAFQueryStringFromParametersWithEncoding(parameters, self.stringEncoding) dataUsingEncoding:self.stringEncoding]];
                     break;
                 case AFJSONParameterEncoding:;
                     [request setValue:[NSString stringWithFormat:@"application/json; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
@@ -561,10 +561,10 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:nil];
 
-    __block LKStreamingMultipartFormData *formData = [[LKStreamingMultipartFormData alloc] initWithURLRequest:request stringEncoding:self.stringEncoding];
+    __block LKSDKStreamingMultipartFormData *formData = [[LKSDKStreamingMultipartFormData alloc] initWithURLRequest:request stringEncoding:self.stringEncoding];
 
     if (parameters) {
-        for (LKQueryStringPair *pair in LKQueryStringPairsFromDictionary(parameters)) {
+        for (LKSDKQueryStringPair *pair in LKSDKQueryStringPairsFromDictionary(parameters)) {
             NSData *data = nil;
             if ([pair.value isKindOfClass:[NSData class]]) {
                 data = pair.value;
@@ -587,22 +587,22 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
     return [formData requestByFinalizingMultipartFormData];
 }
 
-- (LKHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
-                                                    success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-                                                    failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
+- (LKSDKHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
+                                                    success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+                                                    failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure
 {
-    LKHTTPRequestOperation *operation = nil;
+    LKSDKHTTPRequestOperation *operation = nil;
     
     for (NSString *className in self.registeredHTTPOperationClassNames) {
         Class operationClass = NSClassFromString(className);
         if (operationClass && [operationClass canProcessRequest:urlRequest]) {
-            operation = [(LKHTTPRequestOperation *)[operationClass alloc] initWithRequest:urlRequest];
+            operation = [(LKSDKHTTPRequestOperation *)[operationClass alloc] initWithRequest:urlRequest];
             break;
         }
     }
 
     if (!operation) {
-        operation = [[LKHTTPRequestOperation alloc] initWithRequest:urlRequest];
+        operation = [[LKSDKHTTPRequestOperation alloc] initWithRequest:urlRequest];
     }
 
     [operation setCompletionBlockWithSuccess:success failure:failure];
@@ -616,7 +616,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 
 #pragma mark -
 
-- (void)enqueueHTTPRequestOperation:(LKHTTPRequestOperation *)operation {
+- (void)enqueueHTTPRequestOperation:(LKSDKHTTPRequestOperation *)operation {
     [self.operationQueue addOperation:operation];
 }
 
@@ -629,12 +629,12 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 #pragma clang diagnostic pop
 
     for (NSOperation *operation in [self.operationQueue operations]) {
-        if (![operation isKindOfClass:[LKHTTPRequestOperation class]]) {
+        if (![operation isKindOfClass:[LKSDKHTTPRequestOperation class]]) {
             continue;
         }
 
-        BOOL hasMatchingMethod = !method || [method isEqualToString:[[(LKHTTPRequestOperation *)operation request] HTTPMethod]];
-        BOOL hasMatchingPath = [[[[(LKHTTPRequestOperation *)operation request] URL] path] isEqual:pathToBeMatched];
+        BOOL hasMatchingMethod = !method || [method isEqualToString:[[(LKSDKHTTPRequestOperation *)operation request] HTTPMethod]];
+        BOOL hasMatchingPath = [[[[(LKSDKHTTPRequestOperation *)operation request] URL] path] isEqual:pathToBeMatched];
 
         if (hasMatchingMethod && hasMatchingPath) {
             [operation cancel];
@@ -648,7 +648,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 {
     NSMutableArray *mutableOperations = [NSMutableArray array];
     for (NSURLRequest *request in urlRequests) {
-        LKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:nil failure:nil];
+        LKSDKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:nil failure:nil];
         [mutableOperations addObject:operation];
     }
 
@@ -671,7 +671,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 #endif
     }];
 
-    for (LKHTTPRequestOperation *operation in operations) {
+    for (LKSDKHTTPRequestOperation *operation in operations) {
         AFCompletionBlock originalCompletionBlock = [operation.completionBlock copy];
         __weak __typeof(&*operation)weakOperation = operation;
         operation.completionBlock = ^{
@@ -708,61 +708,61 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 
 - (void)getPath:(NSString *)path
      parameters:(NSDictionary *)parameters
-        success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-        failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
+        success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+        failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure
 {
 	NSURLRequest *request = [self requestWithMethod:@"GET" path:path parameters:parameters];
-    LKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+    LKSDKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [self enqueueHTTPRequestOperation:operation];
 }
 
 - (void)JSONpostPath:(NSString *)path
       parameters:(NSData *)parameters
-         success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-         failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
+         success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+         failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure
 {
     NSURLRequest *request = [self JSONPOSTRequestWithMethod:@"POST" path:path parameters:parameters];
-    LKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+    LKSDKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [self enqueueHTTPRequestOperation:operation];
 }
 
 - (void)postPath:(NSString *)path
       parameters:(NSDictionary *)parameters
-         success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-         failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
+         success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+         failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure
 {
 	NSURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:parameters];
-	LKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+	LKSDKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [self enqueueHTTPRequestOperation:operation];
 }
 
 - (void)putPath:(NSString *)path
      parameters:(NSDictionary *)parameters
-        success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-        failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
+        success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+        failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure
 {
 	NSURLRequest *request = [self requestWithMethod:@"PUT" path:path parameters:parameters];
-	LKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+	LKSDKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [self enqueueHTTPRequestOperation:operation];
 }
 
 - (void)deletePath:(NSString *)path
         parameters:(NSDictionary *)parameters
-           success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-           failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
+           success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+           failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure
 {
 	NSURLRequest *request = [self requestWithMethod:@"DELETE" path:path parameters:parameters];
-	LKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+	LKSDKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [self enqueueHTTPRequestOperation:operation];
 }
 
 - (void)patchPath:(NSString *)path
        parameters:(NSDictionary *)parameters
-          success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-          failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure
+          success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+          failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure
 {
     NSURLRequest *request = [self requestWithMethod:@"PATCH" path:path parameters:parameters];
-	LKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+	LKSDKHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [self enqueueHTTPRequestOperation:operation];
 }
 
@@ -795,7 +795,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    LKHTTPClient *HTTPClient = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL];
+    LKSDKHTTPClient *HTTPClient = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL];
 
     HTTPClient.stringEncoding = self.stringEncoding;
     HTTPClient.parameterEncoding = self.parameterEncoding;
@@ -843,10 +843,10 @@ static inline NSString * AFContentTypeForPathExtension(NSString *extension) {
 #endif
 }
 
-NSUInteger const kLKUploadStream3GSuggestedPacketSize = 1024 * 16;
-NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
+NSUInteger const kLKSDKUploadStream3GSuggestedPacketSize = 1024 * 16;
+NSTimeInterval const kLKSDKUploadStream3GSuggestedDelay = 0.2;
 
-@interface LKHTTPBodyPart : NSObject
+@interface LKSDKHTTPBodyPart : NSObject
 @property (nonatomic, assign) NSStringEncoding stringEncoding;
 @property (nonatomic, strong) NSDictionary *headers;
 @property (nonatomic, strong) id body;
@@ -863,7 +863,7 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
         maxLength:(NSUInteger)length;
 @end
 
-@interface LKMultipartBodyStream : NSInputStream <NSStreamDelegate>
+@interface LKSDKMultipartBodyStream : NSInputStream <NSStreamDelegate>
 @property (nonatomic, assign) NSUInteger numberOfBytesInPacket;
 @property (nonatomic, assign) NSTimeInterval delay;
 @property (nonatomic, strong) NSInputStream *inputStream;
@@ -872,18 +872,18 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
 
 - (id)initWithStringEncoding:(NSStringEncoding)encoding;
 - (void)setInitialAndFinalBoundaries;
-- (void)appendHTTPBodyPart:(LKHTTPBodyPart *)bodyPart;
+- (void)appendHTTPBodyPart:(LKSDKHTTPBodyPart *)bodyPart;
 @end
 
 #pragma mark -
 
-@interface LKStreamingMultipartFormData ()
+@interface LKSDKStreamingMultipartFormData ()
 @property (readwrite, nonatomic, copy) NSMutableURLRequest *request;
-@property (readwrite, nonatomic, strong) LKMultipartBodyStream *bodyStream;
+@property (readwrite, nonatomic, strong) LKSDKMultipartBodyStream *bodyStream;
 @property (readwrite, nonatomic, assign) NSStringEncoding stringEncoding;
 @end
 
-@implementation LKStreamingMultipartFormData
+@implementation LKSDKStreamingMultipartFormData
 @synthesize request = _request;
 @synthesize bodyStream = _bodyStream;
 @synthesize stringEncoding = _stringEncoding;
@@ -898,7 +898,7 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
 
     self.request = urlRequest;
     self.stringEncoding = encoding;
-    self.bodyStream = [[LKMultipartBodyStream alloc] initWithStringEncoding:encoding];
+    self.bodyStream = [[LKSDKMultipartBodyStream alloc] initWithStringEncoding:encoding];
 
     return self;
 }
@@ -930,14 +930,14 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
     if (![fileURL isFileURL]) {
         NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedStringFromTable(@"Expected URL to be a file URL", @"AFNetworking", nil) forKey:NSLocalizedFailureReasonErrorKey];
         if (error != NULL) {
-            *error = [[NSError alloc] initWithDomain:LKNetworkingErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
+            *error = [[NSError alloc] initWithDomain:LKSDKNetworkingErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
         }
 
         return NO;
     } else if ([fileURL checkResourceIsReachableAndReturnError:error] == NO) {
         NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedStringFromTable(@"File URL not reachable.", @"AFNetworking", nil) forKey:NSLocalizedFailureReasonErrorKey];
         if (error != NULL) {
-            *error = [[NSError alloc] initWithDomain:LKNetworkingErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
+            *error = [[NSError alloc] initWithDomain:LKSDKNetworkingErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
         }
 
         return NO;
@@ -947,7 +947,7 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
     [mutableHeaders setValue:[NSString stringWithFormat:@"form-data; name=\"%@\"; filename=\"%@\"", name, fileName] forKey:@"Content-Disposition"];
     [mutableHeaders setValue:mimeType forKey:@"Content-Type"];
 
-    LKHTTPBodyPart *bodyPart = [[LKHTTPBodyPart alloc] init];
+    LKSDKHTTPBodyPart *bodyPart = [[LKSDKHTTPBodyPart alloc] init];
     bodyPart.stringEncoding = self.stringEncoding;
     bodyPart.headers = mutableHeaders;
     bodyPart.body = fileURL;
@@ -976,7 +976,7 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
     [mutableHeaders setValue:mimeType forKey:@"Content-Type"];
 
 
-    LKHTTPBodyPart *bodyPart = [[LKHTTPBodyPart alloc] init];
+    LKSDKHTTPBodyPart *bodyPart = [[LKSDKHTTPBodyPart alloc] init];
     bodyPart.stringEncoding = self.stringEncoding;
     bodyPart.headers = mutableHeaders;
     bodyPart.body = inputStream;
@@ -1018,7 +1018,7 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
 {
     NSParameterAssert(body);
 
-    LKHTTPBodyPart *bodyPart = [[LKHTTPBodyPart alloc] init];
+    LKSDKHTTPBodyPart *bodyPart = [[LKSDKHTTPBodyPart alloc] init];
     bodyPart.stringEncoding = self.stringEncoding;
     bodyPart.headers = headers;
     bodyPart.bodyContentLength = [body length];
@@ -1053,18 +1053,18 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
 
 #pragma mark -
 
-@interface LKMultipartBodyStream () <NSCopying>
+@interface LKSDKMultipartBodyStream () <NSCopying>
 @property (nonatomic, assign) NSStreamStatus streamStatus;
 @property (nonatomic, strong) NSError *streamError;
 @property (nonatomic, assign) NSStringEncoding stringEncoding;
 @property (nonatomic, strong) NSMutableArray *HTTPBodyParts;
 @property (nonatomic, strong) NSEnumerator *HTTPBodyPartEnumerator;
-@property (nonatomic, strong) LKHTTPBodyPart *currentHTTPBodyPart;
+@property (nonatomic, strong) LKSDKHTTPBodyPart *currentHTTPBodyPart;
 @property (nonatomic, strong) NSOutputStream *outputStream;
 @property (nonatomic, strong) NSMutableData *buffer;
 @end
 
-@implementation LKMultipartBodyStream
+@implementation LKSDKMultipartBodyStream
 @synthesize streamStatus = _streamStatus;
 @synthesize streamError = _streamError;
 @synthesize stringEncoding = _stringEncoding;
@@ -1092,7 +1092,7 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
 
 - (void)setInitialAndFinalBoundaries {
     if ([self.HTTPBodyParts count] > 0) {
-        for (LKHTTPBodyPart *bodyPart in self.HTTPBodyParts) {
+        for (LKSDKHTTPBodyPart *bodyPart in self.HTTPBodyParts) {
             bodyPart.hasInitialBoundary = NO;
             bodyPart.hasFinalBoundary = NO;
         }
@@ -1102,7 +1102,7 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
     }
 }
 
-- (void)appendHTTPBodyPart:(LKHTTPBodyPart *)bodyPart {
+- (void)appendHTTPBodyPart:(LKSDKHTTPBodyPart *)bodyPart {
     [self.HTTPBodyParts addObject:bodyPart];
 }
 
@@ -1182,7 +1182,7 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
 
 - (unsigned long long)contentLength {
     unsigned long long length = 0;
-    for (LKHTTPBodyPart *bodyPart in self.HTTPBodyParts) {
+    for (LKSDKHTTPBodyPart *bodyPart in self.HTTPBodyParts) {
         length += [bodyPart contentLength];
     }
 
@@ -1208,9 +1208,9 @@ NSTimeInterval const kLKUploadStream3GSuggestedDelay = 0.2;
 #pragma mark - NSCopying
 
 -(id)copyWithZone:(NSZone *)zone {
-    LKMultipartBodyStream *bodyStreamCopy = [[[self class] allocWithZone:zone] initWithStringEncoding:self.stringEncoding];
+    LKSDKMultipartBodyStream *bodyStreamCopy = [[[self class] allocWithZone:zone] initWithStringEncoding:self.stringEncoding];
 
-    for (LKHTTPBodyPart *bodyPart in self.HTTPBodyParts) {
+    for (LKSDKHTTPBodyPart *bodyPart in self.HTTPBodyParts) {
         [bodyStreamCopy appendHTTPBodyPart:[bodyPart copy]];
     }
 
@@ -1230,7 +1230,7 @@ typedef enum {
     AFFinalBoundaryPhase         = 4,
 } LKHTTPBodyPartReadPhase;
 
-@interface LKHTTPBodyPart () <NSCopying> {
+@interface LKSDKHTTPBodyPart () <NSCopying> {
     LKHTTPBodyPartReadPhase _phase;
     NSInputStream *_inputStream;
     unsigned long long _phaseReadOffset;
@@ -1242,7 +1242,7 @@ typedef enum {
             maxLength:(NSUInteger)length;
 @end
 
-@implementation LKHTTPBodyPart
+@implementation LKSDKHTTPBodyPart
 @synthesize stringEncoding = _stringEncoding;
 @synthesize headers = _headers;
 @synthesize body = _body;
@@ -1421,7 +1421,7 @@ typedef enum {
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    LKHTTPBodyPart *bodyPart = [[[self class] allocWithZone:zone] init];
+    LKSDKHTTPBodyPart *bodyPart = [[[self class] allocWithZone:zone] init];
 
     bodyPart.stringEncoding = self.stringEncoding;
     bodyPart.headers = self.headers;

@@ -5,10 +5,10 @@
 //  Copyright (c) 2013 LaunchKey, Inc. All rights reserved.
 //
 
-#import "LKHTTPClient.h"
+#import "LKSDKHTTPClient.h"
 
-@interface LKAPIClient : LKHTTPClient
+@interface LKSDKAPIClient : LKSDKHTTPClient
 
-+ (LKAPIClient *)sharedClient;
++ (LKSDKAPIClient *)sharedClient;
 
 @end

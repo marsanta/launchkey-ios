@@ -8,7 +8,7 @@
 #define privateKeyString @"launchkeyPrivateKey"
 #define publicKeyString @"launchkeyPublicKey"
 
-@interface LKCrypto : NSObject
+@interface LKSDKCrypto : NSObject
 
 +(NSString *)encryptRSA:(NSString *)plainTextString key:(NSString *)key;
 +(NSString *)decryptRSA:(NSString *)cipherString key:(NSString *)key;

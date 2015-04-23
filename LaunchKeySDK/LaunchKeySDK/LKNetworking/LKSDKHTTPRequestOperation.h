@@ -21,12 +21,12 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "LKURLConnectionOperation.h"
+#import "LKSDKURLConnectionOperation.h"
 
 /**
  `AFHTTPRequestOperation` is a subclass of `AFURLConnectionOperation` for requests using the HTTP or HTTPS protocols. It encapsulates the concept of acceptable status codes and content types, which determine the success or failure of a request.
  */
-@interface LKHTTPRequestOperation : LKURLConnectionOperation
+@interface LKSDKHTTPRequestOperation : LKSDKURLConnectionOperation
 
 ///----------------------------------------------
 /// @name Getting HTTP URL Connection Information
@@ -117,8 +117,8 @@
  @param success The block to be executed on the completion of a successful request. This block has no return value and takes two arguments: the receiver operation and the object constructed from the response data of the request.
  @param failure The block to be executed on the completion of an unsuccessful request. This block has no return value and takes two arguments: the receiver operation and the error that occurred during the request.
  */
-- (void)setCompletionBlockWithSuccess:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-                              failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
+- (void)setCompletionBlockWithSuccess:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+                              failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure;
 
 @end
 
@@ -129,5 +129,5 @@
 /**
  Returns a set of MIME types detected in an HTTP `Accept` or `Content-Type` header.
  */
-extern NSSet * AFContentTypesFromHTTPHeader(NSString *string);
+extern NSSet * LKSDKAFContentTypesFromHTTPHeader(NSString *string);
 

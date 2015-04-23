@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "LKURLConnectionOperation.h"
+#import "LKSDKURLConnectionOperation.h"
 
 #import <Availability.h>
 
@@ -98,10 +98,10 @@ typedef enum {
     AFPropertyListParameterEncoding,
 } AFHTTPClientParameterEncoding;
 
-@class LKHTTPRequestOperation;
+@class LKSDKHTTPRequestOperation;
 @protocol AFMultipartFormData;
 
-@interface LKHTTPClient : NSObject <NSCoding, NSCopying>
+@interface LKSDKHTTPClient : NSObject <NSCoding, NSCopying>
 
 ///---------------------------------------
 /// @name Accessing HTTP Client Properties
@@ -315,9 +315,9 @@ typedef enum {
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes two arguments: the created request operation and the object created from the response data of request.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes two arguments:, the created request operation and the `NSError` object describing the network or parsing error that occurred.
  */
-- (LKHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
-                                                    success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-                                                    failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
+- (LKSDKHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
+                                                    success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+                                                    failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure;
 
 ///----------------------------------------
 /// @name Managing Enqueued HTTP Operations
@@ -328,7 +328,7 @@ typedef enum {
 
  @param operation The HTTP request operation to be enqueued.
  */
-- (void)enqueueHTTPRequestOperation:(LKHTTPRequestOperation *)operation;
+- (void)enqueueHTTPRequestOperation:(LKSDKHTTPRequestOperation *)operation;
 
 /**
  Cancels all operations in the HTTP client's operation queue whose URLs match the specified HTTP method and path.
@@ -384,8 +384,8 @@ typedef enum {
  */
 - (void)getPath:(NSString *)path
      parameters:(NSDictionary *)parameters
-        success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-        failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
+        success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+        failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates an `AFHTTPRequestOperation` with a `POST` request, and enqueues it to the HTTP client's operation queue.
@@ -399,13 +399,13 @@ typedef enum {
  */
 - (void)postPath:(NSString *)path
       parameters:(NSDictionary *)parameters
-         success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-         failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
+         success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+         failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure;
 
 - (void)JSONpostPath:(NSString *)path
           parameters:(NSData *)parameters
-             success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-             failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
+             success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+             failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates an `AFHTTPRequestOperation` with a `PUT` request, and enqueues it to the HTTP client's operation queue.
@@ -419,8 +419,8 @@ typedef enum {
  */
 - (void)putPath:(NSString *)path
      parameters:(NSDictionary *)parameters
-        success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-        failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
+        success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+        failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates an `AFHTTPRequestOperation` with a `DELETE` request, and enqueues it to the HTTP client's operation queue.
@@ -434,8 +434,8 @@ typedef enum {
  */
 - (void)deletePath:(NSString *)path
         parameters:(NSDictionary *)parameters
-           success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-           failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
+           success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+           failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates an `AFHTTPRequestOperation` with a `PATCH` request, and enqueues it to the HTTP client's operation queue.
@@ -449,8 +449,8 @@ typedef enum {
  */
 - (void)patchPath:(NSString *)path
        parameters:(NSDictionary *)parameters
-          success:(void (^)(LKHTTPRequestOperation *operation, id responseObject))success
-          failure:(void (^)(LKHTTPRequestOperation *operation, NSError *error))failure;
+          success:(void (^)(LKSDKHTTPRequestOperation *operation, id responseObject))success
+          failure:(void (^)(LKSDKHTTPRequestOperation *operation, NSError *error))failure;
 @end
 
 ///----------------
@@ -525,7 +525,7 @@ typedef enum {
 
  @return A percent-escaped query string
  */
-extern NSString * AFQueryStringFromParametersWithEncoding(NSDictionary *parameters, NSStringEncoding encoding);
+extern NSString * LKSDKAFQueryStringFromParametersWithEncoding(NSDictionary *parameters, NSStringEncoding encoding);
 
 ///--------------------
 /// @name Notifications
@@ -544,8 +544,8 @@ extern NSString * const AFNetworkingReachabilityNotificationStatusItem;
 
 #pragma mark -
 
-extern NSUInteger const kLKUploadStream3GSuggestedPacketSize;
-extern NSTimeInterval const kLKUploadStream3GSuggestedDelay;
+extern NSUInteger const kLKSDKUploadStream3GSuggestedPacketSize;
+extern NSTimeInterval const kLKSDKUploadStream3GSuggestedDelay;
 
 /**
  The `AFMultipartFormData` protocol defines the methods supported by the parameter in the block argument of `AFHTTPClient -multipartFormRequestWithMethod:path:parameters:constructingBodyWithBlock:`.

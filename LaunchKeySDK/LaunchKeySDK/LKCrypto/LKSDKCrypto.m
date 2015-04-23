@@ -9,9 +9,9 @@
 #import <CommonCrypto/CommonCryptor.h>
 #import <Security/Security.h>
 #import "NSData+LKBase64.h"
-#import "LKCrypto.h"
+#import "LKSDKCrypto.h"
 
-@interface LKCrypto ()
+@interface LKSDKCrypto ()
 
 
 @end
@@ -23,7 +23,7 @@ static NSString *pKCS1PublicFooter = @"-----END RSA PUBLIC KEY-----";
 static NSString *pemPrivateHeader = @"-----BEGIN RSA PRIVATE KEY-----";
 static NSString *pemPrivateFooter = @"-----END RSA PRIVATE KEY-----";
 
-@implementation LKCrypto
+@implementation LKSDKCrypto
 
 
 #pragma mark - Encryption/Decryption Methods:

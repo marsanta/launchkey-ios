@@ -61,7 +61,7 @@ static unsigned char base64DecodeLookup[256] =
 // returns the decoded buffer. Must be free'd by caller. Length is given by
 //	outputLength.
 //
-void *LKBase64Decode(
+void *LKSDKBase64Decode(
                      const char *inputBuffer,
                      size_t length,
                      size_t *outputLength)
@@ -139,7 +139,7 @@ void *LKBase64Decode(
 // returns the encoded buffer. Must be free'd by caller. Length is given by
 //	outputLength.
 //
-char *LKBase64Encode(
+char *LKSDKBase64Encode(
                      const void *buffer,
                      size_t length,
                      bool separateLines,
@@ -270,7 +270,7 @@ char *LKBase64Encode(
 {
     NSData *data = [aString dataUsingEncoding:NSASCIIStringEncoding];
     size_t outputLength = 0;
-    void *outputBuffer = LKBase64Decode([data bytes], [data length], &outputLength);
+    void *outputBuffer = LKSDKBase64Decode([data bytes], [data length], &outputLength);
     NSData *result = [NSData dataWithBytes:outputBuffer length:outputLength];
     free(outputBuffer);
     outputBuffer = NULL;
@@ -291,7 +291,7 @@ char *LKBase64Encode(
 {
     size_t outputLength = 0;
     char *outputBuffer =
-    LKBase64Encode([self bytes], [self length], true, &outputLength);
+    LKSDKBase64Encode([self bytes], [self length], true, &outputLength);
     
     NSString *result =
     [[NSString alloc]

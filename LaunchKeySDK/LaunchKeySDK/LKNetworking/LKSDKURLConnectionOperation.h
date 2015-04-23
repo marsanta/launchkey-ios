@@ -91,7 +91,7 @@ typedef enum {
     AFSSLPinningModeCertificate,
 } AFURLConnectionOperationSSLPinningMode;
 
-@interface LKURLConnectionOperation : NSOperation <NSURLConnectionDelegate,
+@interface LKSDKURLConnectionOperation : NSOperation <NSURLConnectionDelegate,
 #if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000) || \
     (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 1080)
 NSURLConnectionDataDelegate, 
@@ -355,9 +355,9 @@ NSCoding, NSCopying>
  `AFNetworkingErrorDomain`
  AFNetworking errors. Error codes for `AFNetworkingErrorDomain` correspond to codes in `NSURLErrorDomain`.
  */
-extern NSString * const LKNetworkingErrorDomain;
-extern NSString * const LKNetworkingOperationFailingURLRequestErrorKey;
-extern NSString * const LKNetworkingOperationFailingURLResponseErrorKey;
+extern NSString * const LKSDKNetworkingErrorDomain;
+extern NSString * const LKSDKNetworkingOperationFailingURLRequestErrorKey;
+extern NSString * const LKSDKNetworkingOperationFailingURLResponseErrorKey;
 
 ///--------------------
 /// @name Notifications
@@ -366,9 +366,9 @@ extern NSString * const LKNetworkingOperationFailingURLResponseErrorKey;
 /**
  Posted when an operation begins executing.
  */
-extern NSString * const LKNetworkingOperationDidStartNotification;
+extern NSString * const LKSDKNetworkingOperationDidStartNotification;
 
 /**
  Posted when an operation finishes.
  */
-extern NSString * const LKNetworkingOperationDidFinishNotification;
+extern NSString * const LKSDKNetworkingOperationDidFinishNotification;

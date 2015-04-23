@@ -11,18 +11,18 @@
 
 typedef void (^pollSuccessBlock)(BOOL authorized);
 typedef void (^logoutSuccessBlock)();
-typedef void (^successBlock)(NSString *userHash, NSString *authRequest, NSString* userPushId, NSString *deviceId);
+typedef void (^lkSuccessBlock)(NSString *userHash, NSString *authRequest, NSString* userPushId, NSString *deviceId);
 typedef void (^whiteLabelSuccessBlock)(NSString *authRequest);
-typedef void (^failureBlock)(NSString *errorMessage, NSString *errorCode);
-typedef void (^registerSuccessBlock)(NSString *qrCode, NSString *qrUrl);
+typedef void (^lkFailureBlock)(NSString *errorMessage, NSString *errorCode);
+typedef void (^lkRegisterSuccessBlock)(NSString *qrCode, NSString *qrUrl);
 
 @interface LKAuthenticationManager : NSObject
 
-@property (nonatomic, copy) successBlock thisSuccess;
-@property (nonatomic, copy) failureBlock thisFailure;
+@property (nonatomic, copy) lkSuccessBlock thisSuccess;
+@property (nonatomic, copy) lkFailureBlock thisFailure;
 @property (nonatomic, copy) pollSuccessBlock thisPollSuccess;
 @property (nonatomic, copy) logoutSuccessBlock thisLogoutSuccess;
-@property (nonatomic, copy) registerSuccessBlock thisRegisterSuccess;
+@property (nonatomic, copy) lkRegisterSuccessBlock thisRegisterSuccess;
 @property (nonatomic, copy) whiteLabelSuccessBlock thisWhiteLabelSuccess;
 
 
@@ -31,14 +31,14 @@ typedef void (^registerSuccessBlock)(NSString *qrCode, NSString *qrUrl);
 - (void)init:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
 - (void)initAsWhiteLabel:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
 
-- (void)authorize:(NSString*)username withSuccess:(successBlock)success withFailure:(failureBlock)failure;
-- (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(successBlock)success withFailure:(failureBlock)failure;
+- (void)authorize:(NSString*)username withSuccess:(lkSuccessBlock)success withFailure:(lkFailureBlock)failure;
+- (void)authorize:(NSString*)username isTransactional:(BOOL)transactional withUserPushId:(BOOL)pushId withSuccess:(lkSuccessBlock)success withFailure:(lkFailureBlock)failure;
 
-- (void)logout:(NSString*)authRequest withSuccess:(logoutSuccessBlock)success withFailure:(failureBlock)failure;
-- (void)isAuthorized:(NSString*)authRequest withSuccess:(pollSuccessBlock)success withFailure:(failureBlock)failure;
+- (void)logout:(NSString*)authRequest withSuccess:(logoutSuccessBlock)success withFailure:(lkFailureBlock)failure;
+- (void)isAuthorized:(NSString*)authRequest withSuccess:(pollSuccessBlock)success withFailure:(lkFailureBlock)failure;
 
 - (BOOL)handleOpenUrl:(NSURL *)url;
 
-- (void)createWhiteLabelUser:(NSString*)identifier withSuccess:(registerSuccessBlock)success withFailure:(failureBlock)failure;
+- (void)createWhiteLabelUser:(NSString*)identifier withSuccess:(lkRegisterSuccessBlock)success withFailure:(lkFailureBlock)failure;
 
 @end
