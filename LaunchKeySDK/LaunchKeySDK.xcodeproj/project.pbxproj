@@ -22,10 +22,30 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		3F7C593B1B8DCD55005E8BDC /* LaunchKeySDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F7C593A1B8DCD55005E8BDC /* LaunchKeySDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3FC230851B8DDB9100E2E6F3 /* LKAuthenticationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6387788A1AD6EF6100364D6E /* LKAuthenticationManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3FC230861B8DDBD600E2E6F3 /* LKSDKCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778821AD6E44400364D6E /* LKSDKCrypto.h */; };
+		3FC230871B8DDBD600E2E6F3 /* LKSDKAPIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 6387787E1AD6E42100364D6E /* LKSDKAPIClient.h */; };
+		3FC230881B8DDBD600E2E6F3 /* LKSDKHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778701AD6E3F800364D6E /* LKSDKHTTPClient.h */; };
+		3FC230891B8DDBD600E2E6F3 /* LKSDKHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778721AD6E3F800364D6E /* LKSDKHTTPRequestOperation.h */; };
+		3FC2308A1B8DDBD600E2E6F3 /* LKSDKJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778741AD6E3F800364D6E /* LKSDKJSONRequestOperation.h */; };
+		3FC2308B1B8DDBD600E2E6F3 /* LKSDKURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778771AD6E3F800364D6E /* LKSDKURLConnectionOperation.h */; };
+		3FC2308C1B8DDBE200E2E6F3 /* NSData+LKAES256.h in Headers */ = {isa = PBXBuildFile; fileRef = 633808301ADC6C8500E13A1B /* NSData+LKAES256.h */; };
+		3FC2308D1B8DDBEE00E2E6F3 /* NSData+LKBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778841AD6E44400364D6E /* NSData+LKBase64.h */; };
+		3FC2308E1B8DDBF700E2E6F3 /* LKNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 638778761AD6E3F800364D6E /* LKNetworking.h */; };
+		3FC2308F1B8DDC1800E2E6F3 /* NSData+LKAES256.m in Sources */ = {isa = PBXBuildFile; fileRef = 633808311ADC6C8500E13A1B /* NSData+LKAES256.m */; };
+		3FC230901B8DDC1800E2E6F3 /* LKSDKCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778831AD6E44400364D6E /* LKSDKCrypto.m */; };
+		3FC230911B8DDC1800E2E6F3 /* NSData+LKBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778851AD6E44400364D6E /* NSData+LKBase64.m */; };
+		3FC230921B8DDC1800E2E6F3 /* LKSDKAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6387787F1AD6E42100364D6E /* LKSDKAPIClient.m */; };
+		3FC230931B8DDC1800E2E6F3 /* LKSDKHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778711AD6E3F800364D6E /* LKSDKHTTPClient.m */; };
+		3FC230941B8DDC1800E2E6F3 /* LKSDKHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778731AD6E3F800364D6E /* LKSDKHTTPRequestOperation.m */; };
+		3FC230951B8DDC1800E2E6F3 /* LKSDKJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778751AD6E3F800364D6E /* LKSDKJSONRequestOperation.m */; };
+		3FC230961B8DDC1800E2E6F3 /* LKSDKURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778781AD6E3F800364D6E /* LKSDKURLConnectionOperation.m */; };
+		3FC230971B8DDC1800E2E6F3 /* LKAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6387788B1AD6EF6100364D6E /* LKAuthenticationManager.m */; };
 		633808321ADC6C8500E13A1B /* NSData+LKAES256.h in Headers */ = {isa = PBXBuildFile; fileRef = 633808301ADC6C8500E13A1B /* NSData+LKAES256.h */; };
 		633808331ADC6C8500E13A1B /* NSData+LKAES256.m in Sources */ = {isa = PBXBuildFile; fileRef = 633808311ADC6C8500E13A1B /* NSData+LKAES256.m */; };
 		638778571AD6E31F00364D6E /* LaunchKeySDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 638778561AD6E31F00364D6E /* LaunchKeySDK.h */; };
-		6387785F1AD6E31F00364D6E /* libLaunchKeySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 638778531AD6E31F00364D6E /* libLaunchKeySDK.a */; };
+		6387785F1AD6E31F00364D6E /* libLaunchKeySDK_.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 638778531AD6E31F00364D6E /* libLaunchKeySDK_.a */; };
 		6387786E1AD6E38D00364D6E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387786D1AD6E38D00364D6E /* Security.framework */; };
 		638778791AD6E3F800364D6E /* LKSDKHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778711AD6E3F800364D6E /* LKSDKHTTPClient.m */; };
 		6387787A1AD6E3F800364D6E /* LKSDKHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 638778731AD6E3F800364D6E /* LKSDKHTTPRequestOperation.m */; };
@@ -80,10 +100,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3F7C59381B8DCD55005E8BDC /* LaunchKeySDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LaunchKeySDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F7C593A1B8DCD55005E8BDC /* LaunchKeySDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LaunchKeySDK.h; sourceTree = "<group>"; };
+		3F7C593C1B8DCD55005E8BDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		633808301ADC6C8500E13A1B /* NSData+LKAES256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+LKAES256.h"; path = "LKCrypto/NSData+LKAES256.h"; sourceTree = "<group>"; };
 		633808311ADC6C8500E13A1B /* NSData+LKAES256.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+LKAES256.m"; path = "LKCrypto/NSData+LKAES256.m"; sourceTree = "<group>"; };
 		633808341ADC6CB000E13A1B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		638778531AD6E31F00364D6E /* libLaunchKeySDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLaunchKeySDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		638778531AD6E31F00364D6E /* libLaunchKeySDK_.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLaunchKeySDK_.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		638778561AD6E31F00364D6E /* LaunchKeySDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LaunchKeySDK.h; sourceTree = "<group>"; };
 		6387785E1AD6E31F00364D6E /* LaunchKeySDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LaunchKeySDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		638778641AD6E31F00364D6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -110,6 +133,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3F7C59341B8DCD55005E8BDC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		638778501AD6E31F00364D6E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -125,13 +155,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				638778881AD6E55C00364D6E /* Security.framework in Frameworks */,
-				6387785F1AD6E31F00364D6E /* libLaunchKeySDK.a in Frameworks */,
+				6387785F1AD6E31F00364D6E /* libLaunchKeySDK_.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F7C59391B8DCD55005E8BDC /* LaunchKeySDK */ = {
+			isa = PBXGroup;
+			children = (
+				3F7C593A1B8DCD55005E8BDC /* LaunchKeySDK.h */,
+				3F7C593C1B8DCD55005E8BDC /* Info.plist */,
+			);
+			path = LaunchKeySDK;
+			sourceTree = "<group>";
+		};
 		6387784A1AD6E31F00364D6E = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +180,7 @@
 				6387786D1AD6E38D00364D6E /* Security.framework */,
 				638778551AD6E31F00364D6E /* LaunchKeySDK */,
 				638778621AD6E31F00364D6E /* LaunchKeySDKTests */,
+				3F7C59391B8DCD55005E8BDC /* LaunchKeySDK */,
 				638778541AD6E31F00364D6E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -148,8 +188,9 @@
 		638778541AD6E31F00364D6E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				638778531AD6E31F00364D6E /* libLaunchKeySDK.a */,
+				638778531AD6E31F00364D6E /* libLaunchKeySDK_.a */,
 				6387785E1AD6E31F00364D6E /* LaunchKeySDKTests.xctest */,
+				3F7C59381B8DCD55005E8BDC /* LaunchKeySDK.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -224,6 +265,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		3F7C59351B8DCD55005E8BDC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3F7C593B1B8DCD55005E8BDC /* LaunchKeySDK.h in Headers */,
+				3FC230851B8DDB9100E2E6F3 /* LKAuthenticationManager.h in Headers */,
+				3FC2308E1B8DDBF700E2E6F3 /* LKNetworking.h in Headers */,
+				3FC2308D1B8DDBEE00E2E6F3 /* NSData+LKBase64.h in Headers */,
+				3FC2308C1B8DDBE200E2E6F3 /* NSData+LKAES256.h in Headers */,
+				3FC230861B8DDBD600E2E6F3 /* LKSDKCrypto.h in Headers */,
+				3FC230871B8DDBD600E2E6F3 /* LKSDKAPIClient.h in Headers */,
+				3FC230881B8DDBD600E2E6F3 /* LKSDKHTTPClient.h in Headers */,
+				3FC230891B8DDBD600E2E6F3 /* LKSDKHTTPRequestOperation.h in Headers */,
+				3FC2308A1B8DDBD600E2E6F3 /* LKSDKJSONRequestOperation.h in Headers */,
+				3FC2308B1B8DDBD600E2E6F3 /* LKSDKURLConnectionOperation.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		638778891AD6EF3F00364D6E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -244,9 +303,27 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		638778521AD6E31F00364D6E /* LaunchKeySDK */ = {
+		3F7C59371B8DCD55005E8BDC /* LaunchKeySDK */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 638778671AD6E31F00364D6E /* Build configuration list for PBXNativeTarget "LaunchKeySDK" */;
+			buildConfigurationList = 3F7C593D1B8DCD55005E8BDC /* Build configuration list for PBXNativeTarget "LaunchKeySDK" */;
+			buildPhases = (
+				3F7C59331B8DCD55005E8BDC /* Sources */,
+				3F7C59341B8DCD55005E8BDC /* Frameworks */,
+				3F7C59351B8DCD55005E8BDC /* Headers */,
+				3F7C59361B8DCD55005E8BDC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LaunchKeySDK;
+			productName = LaunchKeySDK;
+			productReference = 3F7C59381B8DCD55005E8BDC /* LaunchKeySDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		638778521AD6E31F00364D6E /* LaunchKeySDK_ */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 638778671AD6E31F00364D6E /* Build configuration list for PBXNativeTarget "LaunchKeySDK_" */;
 			buildPhases = (
 				6387784F1AD6E31F00364D6E /* Sources */,
 				638778501AD6E31F00364D6E /* Frameworks */,
@@ -258,9 +335,9 @@
 			);
 			dependencies = (
 			);
-			name = LaunchKeySDK;
+			name = LaunchKeySDK_;
 			productName = LaunchKeySDK;
-			productReference = 638778531AD6E31F00364D6E /* libLaunchKeySDK.a */;
+			productReference = 638778531AD6E31F00364D6E /* libLaunchKeySDK_.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		6387785D1AD6E31F00364D6E /* LaunchKeySDKTests */ = {
@@ -290,6 +367,9 @@
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = LaunchKey;
 				TargetAttributes = {
+					3F7C59371B8DCD55005E8BDC = {
+						CreatedOnToolsVersion = 7.0;
+					};
 					638778521AD6E31F00364D6E = {
 						CreatedOnToolsVersion = 6.2;
 					};
@@ -313,14 +393,22 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				638778521AD6E31F00364D6E /* LaunchKeySDK */,
+				638778521AD6E31F00364D6E /* LaunchKeySDK_ */,
 				6387785D1AD6E31F00364D6E /* LaunchKeySDKTests */,
 				6387788F1AD6F6CE00364D6E /* LaunchKeySDKFramework */,
+				3F7C59371B8DCD55005E8BDC /* LaunchKeySDK */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3F7C59361B8DCD55005E8BDC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6387785C1AD6E31F00364D6E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -362,6 +450,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3F7C59331B8DCD55005E8BDC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FC2308F1B8DDC1800E2E6F3 /* NSData+LKAES256.m in Sources */,
+				3FC230901B8DDC1800E2E6F3 /* LKSDKCrypto.m in Sources */,
+				3FC230911B8DDC1800E2E6F3 /* NSData+LKBase64.m in Sources */,
+				3FC230921B8DDC1800E2E6F3 /* LKSDKAPIClient.m in Sources */,
+				3FC230931B8DDC1800E2E6F3 /* LKSDKHTTPClient.m in Sources */,
+				3FC230941B8DDC1800E2E6F3 /* LKSDKHTTPRequestOperation.m in Sources */,
+				3FC230951B8DDC1800E2E6F3 /* LKSDKJSONRequestOperation.m in Sources */,
+				3FC230961B8DDC1800E2E6F3 /* LKSDKURLConnectionOperation.m in Sources */,
+				3FC230971B8DDC1800E2E6F3 /* LKAuthenticationManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6387784F1AD6E31F00364D6E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -390,17 +494,67 @@
 /* Begin PBXTargetDependency section */
 		638778611AD6E31F00364D6E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 638778521AD6E31F00364D6E /* LaunchKeySDK */;
+			target = 638778521AD6E31F00364D6E /* LaunchKeySDK_ */;
 			targetProxy = 638778601AD6E31F00364D6E /* PBXContainerItemProxy */;
 		};
 		638778941AD6F6DF00364D6E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 638778521AD6E31F00364D6E /* LaunchKeySDK */;
+			target = 638778521AD6E31F00364D6E /* LaunchKeySDK_ */;
 			targetProxy = 638778931AD6F6DF00364D6E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		3F7C593E1B8DCD55005E8BDC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = LaunchKeySDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tieto.LaunchKeySDK;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		3F7C593F1B8DCD55005E8BDC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = LaunchKeySDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tieto.LaunchKeySDK;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		638778651AD6E31F00364D6E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -558,6 +712,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3F7C593D1B8DCD55005E8BDC /* Build configuration list for PBXNativeTarget "LaunchKeySDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F7C593E1B8DCD55005E8BDC /* Debug */,
+				3F7C593F1B8DCD55005E8BDC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6387784E1AD6E31F00364D6E /* Build configuration list for PBXProject "LaunchKeySDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -567,7 +730,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		638778671AD6E31F00364D6E /* Build configuration list for PBXNativeTarget "LaunchKeySDK" */ = {
+		638778671AD6E31F00364D6E /* Build configuration list for PBXNativeTarget "LaunchKeySDK_" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				638778681AD6E31F00364D6E /* Debug */,

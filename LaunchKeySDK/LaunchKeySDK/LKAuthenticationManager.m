@@ -50,12 +50,12 @@
 }
 
 - (void)initAsWhiteLabel:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
-   
-    [self init:rocketKey withSecretKey:secretKey withPrivateKey:privateKey];
-     _isWhiteLabel = true;
+    
+    [self initWithKeys:rocketKey withSecretKey:secretKey withPrivateKey:privateKey];
+    _isWhiteLabel = true;
 }
 
-- (void)init:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
+- (void)initWithKeys:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey {
     //save the private key so we can use it for later
     [LKSDKCrypto setPrivateKey:privateKey tag:privateKeyString];
     
@@ -63,7 +63,7 @@
     _rocketKey = rocketKey;
     _session = true;
     _hasUserPushId = false;
-     _isWhiteLabel = false;
+    _isWhiteLabel = false;
 }
 
 - (void)createWhiteLabelUser:(NSString*)identifier withSuccess:(lkRegisterSuccessBlock)success withFailure:(lkFailureBlock)failure {
@@ -84,7 +84,7 @@
         //encrypt the secret key
         NSString *encryptedSecret = [self getEncryptedSecretKey];
         
-                
+        
         //build the parameters for auths POST
         NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
         
@@ -93,7 +93,7 @@
         [postParams setObject:_rocketKey forKey:@"app_key"];
         
         NSData *policyData = [NSJSONSerialization dataWithJSONObject:postParams options:kNilOptions error:nil];
-
+        
         //remove the extra escapes
         NSString *policyStr = [[NSString alloc] initWithData:policyData encoding:NSUTF8StringEncoding];
         policyStr = [policyStr stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
@@ -102,10 +102,10 @@
         
         //sign the encrypted package
         NSString *signedDataString = [self getSignatureOnBodyWithoutDecoding:policyData];
-
+        
         //strip the new lines
         signedDataString = [signedDataString stringByReplacingOccurrencesOfString:@"\r\n" withString:@""];
-
+        
         //url encode the signature
         NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)signedDataString, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
         
@@ -226,7 +226,7 @@
 }
 
 - (void)pollRequest {
-     //encrypt the secret key
+    //encrypt the secret key
     NSString *encryptedSecret = [self getEncryptedSecretKey];
     //sign the encrypted package
     NSString *signedDataString = [self getSignatureOnSecretKey:encryptedSecret];
@@ -258,8 +258,8 @@
         //convert response to json dictionary
         NSData *jsonData = [decryptedResponse dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *jsonResponse= [NSJSONSerialization JSONObjectWithData: jsonData
-                                                            options: NSJSONReadingMutableContainers
-                                                              error: nil];
+                                                                    options: NSJSONReadingMutableContainers
+                                                                      error: nil];
         
         //if auth request is not the same, something bad happened
         if (![_authRequest isEqualToString:[jsonResponse objectForKey:@"auth_request"]]) {

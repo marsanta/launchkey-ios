@@ -28,7 +28,7 @@ typedef void (^lkRegisterSuccessBlock)(NSString *qrCode, NSString *qrUrl);
 
 + (LKAuthenticationManager *)sharedClient;
 
-- (void)init:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
+- (void)initWithKeys:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
 - (void)initAsWhiteLabel:(NSString *)rocketKey withSecretKey:(NSString*)secretKey withPrivateKey:(NSString*)privateKey;
 
 - (void)authorize:(NSString*)username withSuccess:(lkSuccessBlock)success withFailure:(lkFailureBlock)failure;
